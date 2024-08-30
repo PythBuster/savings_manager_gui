@@ -1,7 +1,7 @@
 import asyncio
 
 from PySide6.QtWidgets import QWidget, QMainWindow, QMessageBox, QPushButton, QLabel
-from qasync import asyncClose
+from qasync import asyncClose, asyncSlot
 
 from src.gui.moneyboxes_overview_widget import MoneyboxesOverviewWidget
 from src.gui.ui.ui_main_window import Ui_MainWindow
@@ -25,7 +25,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             lambda: QMessageBox.about(self, f"About {app_title}", "...")
         )
         self.pushButton_MoneyboxesOverview.clicked.connect(
-            lambda: asyncio.ensure_future(self.switch_main_board_widget(MoneyboxesOverviewWidget))
+            lambda: asyncio.ensure_future(self.load_moneyboxes_overview_widget())
         )
         self.pushButton.clicked.connect(
             lambda: asyncio.ensure_future(self.switch_main_board_widget(QLabel))
@@ -34,7 +34,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             lambda: asyncio.ensure_future(self.switch_main_board_widget(QPushButton))
         )
 
-    async def switch_main_board_widget(self, child_class: QWidget):
+    @asyncSlot()
+    async def on_enter_moneybox(self, moneybox_id: int):
+        print("enter", moneybox_id)
+
+    async def load_moneyboxes_overview_widget(self):
+        moneyboxes_overview_widget = MoneyboxesOverviewWidget(parent_window=self)
+        await self.switch_main_board_widget(moneyboxes_overview_widget)
+
+    async def switch_main_board_widget(self, child: QWidget):
         while self.main_board_layout.count() > 0:
             item = self.main_board_layout.takeAt(0)
             widget = item.widget()
@@ -42,7 +50,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if widget is not None:
                 widget.deleteLater()
 
-        child = child_class()
         self.main_board_layout.addWidget(child)
 
         if hasattr(child, "load_api_content"):

@@ -51,7 +51,8 @@ class Ui_MoneyboxesOverviewWidget(object):
 
         self.retranslateUi(MoneyboxesOverviewWidget)
 
-        QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
+        # don't connectSlotsByName(), we are using qasyncSlots / async slots
+        # QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
     # setupUi
 
     def retranslateUi(self, MoneyboxesOverviewWidget):

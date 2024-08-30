@@ -77,7 +77,8 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        QMetaObject.connectSlotsByName(MainWindow)
+        # don't connectSlotsByName(), we are using qasyncSlots / async slots
+        #QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
