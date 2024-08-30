@@ -119,11 +119,6 @@ class Ui_MoneyBoxWidget(object):
 
         self.horizontalLayout.addWidget(self.label_id)
 
-        self.label_2 = QLabel(self.frame)
-        self.label_2.setObjectName(u"label_2")
-
-        self.horizontalLayout.addWidget(self.label_2)
-
         self.horizontalSpacer_4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout.addItem(self.horizontalSpacer_4)
@@ -207,17 +202,15 @@ class Ui_MoneyBoxWidget(object):
 
         self.retranslateUi(MoneyBoxWidget)
 
-        # don't connectSlotsByName(), we are using qasyncSlots / async slots
-        # QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
+        QMetaObject.connectSlotsByName(MoneyBoxWidget)
     # setupUi
 
     def retranslateUi(self, MoneyBoxWidget):
         MoneyBoxWidget.setWindowTitle(QCoreApplication.translate("MoneyBoxWidget", u"Form", None))
         self.label_3.setText(QCoreApplication.translate("MoneyBoxWidget", u"+", None))
         self.label_savings_amount.setText(QCoreApplication.translate("MoneyBoxWidget", u"35,00 \u20ac", None))
-        self.label_1.setText(QCoreApplication.translate("MoneyBoxWidget", u"( ID: ", None))
+        self.label_1.setText(QCoreApplication.translate("MoneyBoxWidget", u"ID: ", None))
         self.label_id.setText(QCoreApplication.translate("MoneyBoxWidget", u"1", None))
-        self.label_2.setText(QCoreApplication.translate("MoneyBoxWidget", u")", None))
         self.label_name.setText(QCoreApplication.translate("MoneyBoxWidget", u"Overflow Moneybox", None))
         self.label_priority.setText(QCoreApplication.translate("MoneyBoxWidget", u"1", None))
         self.label.setText(QCoreApplication.translate("MoneyBoxWidget", u"Target:", None))

@@ -1,0 +1,50 @@
+from PySide6.QtCore import Signal
+from PySide6.QtGui import QMouseEvent
+from PySide6.QtWidgets import QWidget
+
+from src.gui.ui.ui_moneybox_overview_widget import Ui_MoneyboxOverviewWidget
+
+
+class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
+    add_amount_clicked = Signal(int)
+    sub_amount_clicked = Signal(int)
+    transfer_amount_clicked = Signal(int)
+
+    def __init__(
+            self,
+            moneybox_id: int,
+            name_label: str,
+            priority_label: str,
+            savings_amount_label: str,
+            savings_target_label: str,
+            balance_label: str,
+            parent: QWidget|None = None,
+    ):
+        self.moneybox_id = moneybox_id
+
+        super().__init__(parent)
+        self.setupUi(self)
+
+        self.label_id.setText(str(moneybox_id))
+        self.label_name.setText(name_label)
+        self.label_balance.setText(balance_label)
+        self.label_savings_amount.setText(savings_amount_label)
+        self.label_savings_target.setText(savings_target_label)
+        self.label_priority.setText(priority_label)
+
+        # connections
+        self.pushButton_add_amount.clicked.connect(
+            lambda : self.add_amount_clicked.emit(moneybox_id)
+        )
+        self.pushButton_sub_amount.clicked.connect(
+            lambda : self.sub_amount_clicked.emit(moneybox_id)
+        )
+        self.pushButton_transfer_amount.clicked.connect(
+            lambda : self.transfer_amount_clicked.emit(moneybox_id)
+        )
+
+        self.adjustSize()
+
+    def mousePressEvent(self, event: QMouseEvent):
+        self.enter_moneybox.emit(self.moneybox_id)
+        super().mousePressEvent(event)

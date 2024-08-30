@@ -60,7 +60,7 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
             row = max(0, row_index) + 1
 
             moneybox_widget = MoneyboxWidget(
-                moneybox_id=moneybox["id"],
+                moneybox_id=priority_sorted_moneyboxes[0]["id"],
                 name_label=priority_sorted_moneyboxes[0]["name"],
                 savings_amount_label=(
                     f"{priority_sorted_moneyboxes[0]['savings_amount'] / 100:.2f} €".replace(".", ",")
