@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QWidget, QDialog, QLineEdit, QStyledItemDelegate, QStyleOptionViewItem
 
-from src.gui.ui.ui_add_sub_transfer_amount_dialog import Ui_AddSubTransferDialog
+from src.gui.ui.ui_add_sub_transfer_amount_dialog import Ui_AddSubTransferAmountDialog
 
 
 class RightAlignedDelegate(QStyledItemDelegate):
@@ -10,7 +10,7 @@ class RightAlignedDelegate(QStyledItemDelegate):
         option.displayAlignment = Qt.AlignRight | Qt.AlignVCenter  # Right-align the text
 
 
-class AddSubDialog(QDialog, Ui_AddSubTransferDialog):
+class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
     def __init__(
             self,
             parent: QWidget|None = None,

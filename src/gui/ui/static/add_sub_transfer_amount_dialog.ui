@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AddSubTransferDialog</class>
- <widget class="QDialog" name="AddSubTransferDialog">
+ <class>AddSubTransferAmountDialog</class>
+ <widget class="QDialog" name="AddSubTransferAmountDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -65,7 +65,11 @@
        </spacer>
       </item>
       <item>
-       <widget class="QComboBox" name="comboBox_moneyboxes"/>
+       <widget class="QComboBox" name="comboBox_moneyboxes">
+        <property name="styleSheet">
+         <string notr="true">text-align: right;</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

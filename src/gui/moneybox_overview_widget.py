@@ -1,4 +1,5 @@
 import asyncio
+import json
 from typing import Any
 
 from PySide6.QtCore import Signal, Qt
@@ -106,6 +107,14 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             ),
                         }
                     )
+                else:
+                    message_str = consumer.response.content.decode(encoding="utf-8")
+                    message = json.loads(message_str)["message"]
+                    QMessageBox.warning(
+                        self,
+                        "Add failed",
+                        f"{message} (Amounts are expressed in cents.)",
+                    )
 
     @asyncSlot()
     async def on_sub_amount_clicked(self):
@@ -149,6 +158,14 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             ),
                         }
                     )
+                else:
+                    message_str = consumer.response.content.decode(encoding="utf-8")
+                    message = json.loads(message_str)["message"]
+                    QMessageBox.warning(
+                        self,
+                        "Sub failed",
+                        f"{message} (Amounts are expressed in cents.)",
+                    )
 
     @asyncSlot()
     async def on_transfer_amount_clicked(self):
@@ -165,7 +182,13 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     if self.moneybox_id != moneybox["id"]:
                         dialog.comboBox_moneyboxes.addItem(f"{moneybox['name']} (ID: {moneybox['id']})")
             else:
-                # TODO: inform user about erros
+                message_str = consumer.response.content.decode(encoding="utf-8")
+                message = json.loads(message_str)["message"]
+                QMessageBox.warning(
+                    self,
+                    "Transfer failed",
+                    message,
+                )
                 return
 
         dialog.group_to_moneybox.setVisible(True)
@@ -193,4 +216,12 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     new_balance = int(self.label_balance.text().replace(",", "").replace(".", "").replace("€", "").strip()) - amount
                     self.label_balance.setText(
                         f"{new_balance / 100:.2f} €".replace(".", ",")
+                    )
+                else:
+                    message_str = consumer.response.content.decode(encoding="utf-8")
+                    message = json.loads(message_str)["message"]
+                    QMessageBox.warning(
+                        self,
+                        "Transfer failed",
+                        f"{message} (Amounts are expressed in cents.)",
                     )

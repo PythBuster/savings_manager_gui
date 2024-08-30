@@ -22,7 +22,7 @@ class Ui_MoneyboxesOverviewWidget(object):
     def setupUi(self, MoneyboxesOverviewWidget):
         if not MoneyboxesOverviewWidget.objectName():
             MoneyboxesOverviewWidget.setObjectName(u"MoneyboxesOverviewWidget")
-        MoneyboxesOverviewWidget.resize(546, 382)
+        MoneyboxesOverviewWidget.resize(304, 198)
         self.verticalLayout = QVBoxLayout(MoneyboxesOverviewWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.horizontalLayout = QHBoxLayout()
@@ -48,9 +48,10 @@ class Ui_MoneyboxesOverviewWidget(object):
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
+
         self.retranslateUi(MoneyboxesOverviewWidget)
 
-        # QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
+        #QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
     # setupUi
 
     def retranslateUi(self, MoneyboxesOverviewWidget):
