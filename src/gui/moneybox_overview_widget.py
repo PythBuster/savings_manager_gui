@@ -1,14 +1,17 @@
 import asyncio
 from typing import Any
 
-from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QWidget, QDialog, QMessageBox
+from PySide6.QtCore import Signal, Qt
+from PySide6.QtWidgets import QWidget, QDialog, QMessageBox, QStyledItemDelegate, QStyleOptionViewItem
 from qasync import asyncSlot
 
-from savings_manager_cli.api_consumers import PostMoneyboxBalanceAddApiConsumer, PostMoneyboxBalanceSubApiConsumer
+from savings_manager_cli.api_consumers import PostMoneyboxBalanceAddApiConsumer, PostMoneyboxBalanceSubApiConsumer, \
+    GetMoneyboxesApiConsumer, PostMoneyboxBalanceTransferApiConsumer
 
-from src.gui.add_sub_dialog import AddSubDialog
+from src.gui.add_sub_transfer_dialog import AddSubDialog
 from src.gui.ui.ui_moneybox_overview_widget import Ui_MoneyboxOverviewWidget
+
+
 
 
 class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
@@ -149,4 +152,45 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
 
     @asyncSlot()
     async def on_transfer_amount_clicked(self):
-        pass
+        dialog = AddSubDialog()
+        dialog.setWindowTitle("Transfert amount...")
+
+        # fill combobox with moneybox names and ids
+        async with GetMoneyboxesApiConsumer() as consumer:
+            if consumer.response.status_code == 200:
+                moneyboxes = consumer.response.json()["moneyboxes"]
+                sorted_by_priority_moneyboxes = sorted(moneyboxes, key=lambda m: m["priority"])
+
+                for moneybox in sorted_by_priority_moneyboxes:
+                    if self.moneybox_id != moneybox["id"]:
+                        dialog.comboBox_moneyboxes.addItem(f"{moneybox['name']} (ID: {moneybox['id']})")
+            else:
+                # TODO: inform user about erros
+                return
+
+        dialog.group_to_moneybox.setVisible(True)
+
+        result = dialog.exec()
+
+        if result == QDialog.Accepted:
+            amount = int(dialog.lineEdit_amount.text().replace(",", "").replace(".", ""))
+            description = dialog.lineEdit_description.text()
+            to_moneybox_id = int(dialog.comboBox_moneyboxes.currentText().split(":")[-1][:-1].strip())
+
+            async with PostMoneyboxBalanceTransferApiConsumer(
+                    from_moneybox_id=self.moneybox_id,
+                    to_moneybox_id=to_moneybox_id,
+                    amount=amount,
+                    description=description
+            ) as consumer:
+                if consumer.response.status_code == 204:
+                    QMessageBox.information(
+                        self,
+                        "Transferred amount",
+                        "Transferred amount successfully!",
+                    )
+
+                    new_balance = int(self.label_balance.text().replace(",", "").replace(".", "").replace("€", "").strip()) - amount
+                    self.label_balance.setText(
+                        f"{new_balance / 100:.2f} €".replace(".", ",")
+                    )
