@@ -25,14 +25,14 @@
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton">
+       <widget class="QPushButton" name="pushButton_PrioritylistWidget">
         <property name="text">
          <string>Prioritylist</string>
         </property>
        </widget>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="pushButton_AppSettingsWidget">
         <property name="text">
          <string>App Settings</string>
         </property>
@@ -74,6 +74,13 @@
     <addaction name="actionAbout_Qt"/>
     <addaction name="actionAbout_Savings_Manager_GUI"/>
    </widget>
+   <widget class="QMenu" name="menu_File">
+    <property name="title">
+     <string>&amp;File</string>
+    </property>
+    <addaction name="action_Exit"/>
+   </widget>
+   <addaction name="menu_File"/>
    <addaction name="menu_Help"/>
   </widget>
   <action name="actionAbout_Qt">
@@ -86,7 +93,29 @@
     <string>About &amp;Savings Manager GUI</string>
    </property>
   </action>
+  <action name="action_Exit">
+   <property name="text">
+    <string>&amp;Exit</string>
+   </property>
+  </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>action_Exit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>196</x>
+     <y>116</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

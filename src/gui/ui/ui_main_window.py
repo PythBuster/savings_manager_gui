@@ -24,11 +24,13 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(849, 537)
+        MainWindow.resize(393, 234)
         self.actionAbout_Qt = QAction(MainWindow)
         self.actionAbout_Qt.setObjectName(u"actionAbout_Qt")
         self.actionAbout_Savings_Manager_GUI = QAction(MainWindow)
         self.actionAbout_Savings_Manager_GUI.setObjectName(u"actionAbout_Savings_Manager_GUI")
+        self.action_Exit = QAction(MainWindow)
+        self.action_Exit.setObjectName(u"action_Exit")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -40,15 +42,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_navigation.addWidget(self.pushButton_MoneyboxesOverview)
 
-        self.pushButton = QPushButton(self.centralwidget)
-        self.pushButton.setObjectName(u"pushButton")
+        self.pushButton_PrioritylistWidget = QPushButton(self.centralwidget)
+        self.pushButton_PrioritylistWidget.setObjectName(u"pushButton_PrioritylistWidget")
 
-        self.verticalLayout_navigation.addWidget(self.pushButton)
+        self.verticalLayout_navigation.addWidget(self.pushButton_PrioritylistWidget)
 
-        self.pushButton_3 = QPushButton(self.centralwidget)
-        self.pushButton_3.setObjectName(u"pushButton_3")
+        self.pushButton_AppSettingsWidget = QPushButton(self.centralwidget)
+        self.pushButton_AppSettingsWidget.setObjectName(u"pushButton_AppSettingsWidget")
 
-        self.verticalLayout_navigation.addWidget(self.pushButton_3)
+        self.verticalLayout_navigation.addWidget(self.pushButton_AppSettingsWidget)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
 
@@ -66,28 +68,34 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 849, 22))
+        self.menubar.setGeometry(QRect(0, 0, 393, 22))
         self.menu_Help = QMenu(self.menubar)
         self.menu_Help.setObjectName(u"menu_Help")
+        self.menu_File = QMenu(self.menubar)
+        self.menu_File.setObjectName(u"menu_File")
         MainWindow.setMenuBar(self.menubar)
 
+        self.menubar.addAction(self.menu_File.menuAction())
         self.menubar.addAction(self.menu_Help.menuAction())
         self.menu_Help.addAction(self.actionAbout_Qt)
         self.menu_Help.addAction(self.actionAbout_Savings_Manager_GUI)
+        self.menu_File.addAction(self.action_Exit)
 
         self.retranslateUi(MainWindow)
+        self.action_Exit.triggered.connect(MainWindow.close)
 
-        # don't connectSlotsByName(), we are using qasyncSlots / async slots
-        #QMetaObject.connectSlotsByName(MainWindow)
+        # QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
         MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
         self.actionAbout_Qt.setText(QCoreApplication.translate("MainWindow", u"About &Qt", None))
         self.actionAbout_Savings_Manager_GUI.setText(QCoreApplication.translate("MainWindow", u"About &Savings Manager GUI", None))
+        self.action_Exit.setText(QCoreApplication.translate("MainWindow", u"&Exit", None))
         self.pushButton_MoneyboxesOverview.setText(QCoreApplication.translate("MainWindow", u"My Moneyboxes", None))
-        self.pushButton.setText(QCoreApplication.translate("MainWindow", u"Prioritylist", None))
-        self.pushButton_3.setText(QCoreApplication.translate("MainWindow", u"App Settings", None))
+        self.pushButton_PrioritylistWidget.setText(QCoreApplication.translate("MainWindow", u"Prioritylist", None))
+        self.pushButton_AppSettingsWidget.setText(QCoreApplication.translate("MainWindow", u"App Settings", None))
         self.menu_Help.setTitle(QCoreApplication.translate("MainWindow", u"&Help", None))
+        self.menu_File.setTitle(QCoreApplication.translate("MainWindow", u"&File", None))
     # retranslateUi
 

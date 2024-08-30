@@ -202,7 +202,7 @@ class Ui_MoneyBoxWidget(object):
 
         self.retranslateUi(MoneyBoxWidget)
 
-        QMetaObject.connectSlotsByName(MoneyBoxWidget)
+        # QMetaObject.connectSlotsByName(MoneyBoxWidget)
     # setupUi
 
     def retranslateUi(self, MoneyBoxWidget):

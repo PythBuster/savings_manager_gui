@@ -48,10 +48,8 @@ class Ui_MoneyboxesOverviewWidget(object):
 
         self.verticalLayout.addItem(self.verticalSpacer)
 
-
         self.retranslateUi(MoneyboxesOverviewWidget)
 
-        # don't connectSlotsByName(), we are using qasyncSlots / async slots
         # QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
     # setupUi
 

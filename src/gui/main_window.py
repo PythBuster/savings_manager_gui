@@ -20,19 +20,22 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle(app_title)
 
 
+        # connections
         self.actionAbout_Qt.triggered.connect(
             lambda: QMessageBox.aboutQt(self, "About Qt")
         )
         self.actionAbout_Savings_Manager_GUI.triggered.connect(
             lambda: QMessageBox.about(self, f"About {app_title}", "...")
         )
+
+        # connection - navigation buttons
         self.pushButton_MoneyboxesOverview.clicked.connect(
             lambda: asyncio.ensure_future(self.load_moneyboxes_overview_widget())
         )
-        self.pushButton.clicked.connect(
+        self.pushButton_PrioritylistWidget.clicked.connect(
             lambda: asyncio.ensure_future(self.switch_main_board_widget(QLabel))
         )
-        self.pushButton_3.clicked.connect(
+        self.pushButton_AppSettingsWidget.clicked.connect(
             lambda: asyncio.ensure_future(self.switch_main_board_widget(QPushButton))
         )
 
