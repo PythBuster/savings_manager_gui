@@ -51,9 +51,17 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     moneybox_id=data["id"],
                     name_label=data["name"],
                     priority_label=str(data["priority"]),
-                    savings_amount_label=str(data["savings_amount"]),
-                    savings_target_label=str(data["savings_target"]),
-                    balance_label=str(data["balance"]),
+                    savings_amount_label=(
+                        f"{data['savings_amount'] / 100:.2f} €".replace(".", ",")
+                    ),
+                    savings_target_label=(
+                        "No Limit"
+                        if data["savings_target"] is None
+                        else f"{data['savings_target'] / 100:.2f} €".replace(".", ",")
+                    ),
+                    balance_label=(
+                        f"{data['balance'] / 100:.2f} €".replace(".", ",")
+                    ),
                 )
                 await self.switch_main_board_widget(child=moneybox_overview_widget)
             else:
