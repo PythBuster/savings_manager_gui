@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "savings-manager-gui"
+version = "0.1.0"
+description = ""
+authors = ["PythBuster <pythbuster@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<3.13"
+savings-manager-cli = {git = "https://github.com/pythbuster/savings_manager_cli.git", rev = "main"}
+pyside6 = "^6.7.2"
+qasync = "^0.27.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
