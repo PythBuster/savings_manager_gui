@@ -1,3 +1,5 @@
+import asyncio
+
 from PySide6.QtWidgets import QWidget, QMainWindow, QMessageBox, QPushButton, QLabel
 from qasync import asyncClose
 
@@ -15,15 +17,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         app_title = f"Savings Manager GUI v{app_data['version']}"
         self.setWindowTitle(app_title)
 
-        self.main_board_widgets = {
-            MoneyboxesOverviewWidget: MoneyboxesOverviewWidget(),
-            QPushButton: QPushButton("test"),
-            QLabel: QLabel("test"),
-        }
-
-        for widget in self.main_board_widgets.values():
-            self.main_layout.addWidget(widget)
-            widget.setVisible(False)
 
         self.actionAbout_Qt.triggered.connect(
             lambda: QMessageBox.aboutQt(self, "About Qt")
@@ -32,20 +25,28 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             lambda: QMessageBox.about(self, f"About {app_title}", "...")
         )
         self.pushButton_MoneyboxesOverview.clicked.connect(
-            lambda: self.switch_main_board_widget(MoneyboxesOverviewWidget)
+            lambda: asyncio.ensure_future(self.switch_main_board_widget(MoneyboxesOverviewWidget))
         )
         self.pushButton.clicked.connect(
-            lambda: self.switch_main_board_widget(QLabel)
+            lambda: asyncio.ensure_future(self.switch_main_board_widget(QLabel))
         )
         self.pushButton_3.clicked.connect(
-            lambda: self.switch_main_board_widget(QPushButton)
+            lambda: asyncio.ensure_future(self.switch_main_board_widget(QPushButton))
         )
 
-    def switch_main_board_widget(self, child: QWidget):
-        for widget in self.main_board_widgets.values():
-            widget.setVisible(False)
+    async def switch_main_board_widget(self, child_class: QWidget):
+        while self.main_board_layout.count() > 0:
+            item = self.main_board_layout.takeAt(0)
+            widget = item.widget()
 
-        self.main_board_widgets[child].setVisible(True)
+            if widget is not None:
+                widget.deleteLater()
+
+        child = child_class()
+        self.main_board_layout.addWidget(child)
+
+        if hasattr(child, "load_api_content"):
+            await child.load_api_content()
 
     @asyncClose
     async def closeEvent(self, event):

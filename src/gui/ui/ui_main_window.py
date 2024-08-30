@@ -16,9 +16,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QMainWindow,
-    QMenu, QMenuBar, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QHBoxLayout, QMainWindow, QMenu,
+    QMenuBar, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -57,24 +57,10 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout.addLayout(self.verticalLayout_navigation)
 
-        self.verticalLayout = QVBoxLayout()
-        self.verticalLayout.setObjectName(u"verticalLayout")
-        self.frame_main_board = QFrame(self.centralwidget)
-        self.frame_main_board.setObjectName(u"frame_main_board")
-        self.frame_main_board.setFrameShape(QFrame.Shape.StyledPanel)
-        self.frame_main_board.setFrameShadow(QFrame.Shadow.Raised)
-        self.verticalLayout_3 = QVBoxLayout(self.frame_main_board)
-        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
-        self.main_layout = QVBoxLayout()
-        self.main_layout.setObjectName(u"main_layout")
+        self.main_board_layout = QVBoxLayout()
+        self.main_board_layout.setObjectName(u"main_board_layout")
 
-        self.verticalLayout_3.addLayout(self.main_layout)
-
-
-        self.verticalLayout.addWidget(self.frame_main_board)
-
-
-        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.horizontalLayout.addLayout(self.main_board_layout)
 
         self.horizontalLayout.setStretch(1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
