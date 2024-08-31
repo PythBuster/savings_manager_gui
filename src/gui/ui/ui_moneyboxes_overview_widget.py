@@ -51,7 +51,7 @@ class Ui_MoneyboxesOverviewWidget(object):
 
         self.retranslateUi(MoneyboxesOverviewWidget)
 
-        QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
+        #QMetaObject.connectSlotsByName(MoneyboxesOverviewWidget)
     # setupUi
 
     def retranslateUi(self, MoneyboxesOverviewWidget):

@@ -89,7 +89,7 @@ class Ui_MoneyboxSettingsDialog(object):
 
         self.retranslateUi(MoneyboxSettingsDialog)
 
-        QMetaObject.connectSlotsByName(MoneyboxSettingsDialog)
+        #QMetaObject.connectSlotsByName(MoneyboxSettingsDialog)
     # setupUi
 
     def retranslateUi(self, MoneyboxSettingsDialog):
