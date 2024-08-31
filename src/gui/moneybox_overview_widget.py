@@ -99,7 +99,6 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                         value = data_dict.get(key, "")  # Verwende .get, um einen leeren String zurückzugeben, falls der Key fehlt
                         self.tableWidget_transaction_logs.setItem(row_idx, col_idx, QTableWidgetItem(str(value)))
 
-
             elif consumer.response.status_code == 204:
                 # to nothing
                 pass
@@ -409,6 +408,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     self.label_balance.setText(
                         f"{new_balance / 100:.2f} €".replace(".", ",")
                     )
+                    await self.load_api_content()
                 else:
                     message_str = consumer.response.content.decode(encoding="utf-8")
                     message = json.loads(message_str)["message"]
