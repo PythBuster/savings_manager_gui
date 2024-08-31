@@ -52,6 +52,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             lambda: asyncio.ensure_future(self.load_app_settings_widget())
         )
 
+        task = asyncio.ensure_future(self.load_moneyboxes_overview_widget())
+        self._background_tasks: set[asyncio.Task] = {task}
+        task.add_done_callback(self._background_tasks.discard)
+
     @asyncSlot()
     async def on_action_settings_triggered(self):
         server_settings_dialog = ServerSettingsDialog(
