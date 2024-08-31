@@ -420,6 +420,14 @@ color: black;</string>
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>pushButton_add_amount</tabstop>
+  <tabstop>pushButton_sub_amount</tabstop>
+  <tabstop>pushButton_transfer_amount</tabstop>
+  <tabstop>pushButton_settings</tabstop>
+  <tabstop>pushButton_delete_moneybox</tabstop>
+  <tabstop>tableWidget_transaction_logs</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -7,7 +7,8 @@ from qasync import asyncClose, asyncSlot
 from savings_manager_cli import api_consumers
 from savings_manager_cli.api_consumers import (GetAppSettingsApiConsumer,
                                                GetMoneyboxApiConsumer,
-                                               PatchAppSettingsApiConsumer)
+                                               PatchAppSettingsApiConsumer,
+                                               PatchSendTestEmailApiConsumer)
 
 from src.gui.app_settings_dialog import AppSettingsDialog
 from src.gui.moneybox_overview_widget import MoneyboxOverviewWidget
@@ -184,6 +185,26 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 "Update AppSettings failed",
                                 message,
                             )
+
+                    if app_settings_dialog.sending_testemail_requested:
+                        user_email_address = (
+                            app_settings_dialog.lineEdit_user_email_address.text()
+                        )
+                        async with PatchSendTestEmailApiConsumer() as consumer:
+                            if consumer.response.status_code == 204:
+                                QMessageBox.information(
+                                    self,
+                                    "Test email sent successfully",
+                                    f"Sent a test email to: {user_email_address}",
+                                )
+                            else:
+                                QMessageBox.warning(
+                                    self,
+                                    "Failed sending a test email.",
+                                    "Test email could not be sent.\n\nPlease check your user email address "
+                                    " and ensure you set SMTP outgoing server data in savings manager backend "
+                                    " .env file is set and correct!",
+                                )
 
                 await self.load_moneyboxes_overview_widget()
             else:

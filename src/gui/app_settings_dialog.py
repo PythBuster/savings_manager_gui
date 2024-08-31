@@ -22,6 +22,7 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
         super().__init__(parent)
         self.setupUi(self)
 
+        self.sending_testemail_requested = False
         self._is_amount_valid = False
         self._is_email_address_valid = False
 
@@ -49,6 +50,7 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
         # connections
         self.pushButton_apply.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
+        self.pushButton_send_testemail.clicked.connect(self.close_with_email_send)
         self.lineEdit_savings_amount.textChanged.connect(self.validate_amount)
         self.lineEdit_user_email_address.textChanged.connect(
             self.validate_email_address
@@ -57,6 +59,11 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
             self.handle_checkbox_state_change
         )
         self.adjustSize()
+        self.pushButton_cancel.setFocus()
+
+    def close_with_email_send(self):
+        self.sending_testemail_requested = True
+        self.accept()
 
     def handle_checkbox_state_change(self, state):
         if state == Qt.Checked.value:

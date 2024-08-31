@@ -19,9 +19,6 @@ class ServerSettingsDialog(QDialog, Ui_ServerSettingsDialog):
         self.lineEdit_host.setText(host_label)
         self.lineEdit_port.setText(port_label)
 
-        self._previous_lineEdit_host_text = host_label
-        self._previous_lineEdit_port_text = port_label
-
         self.validate_host()
         self.validate_port()
 
@@ -45,27 +42,13 @@ class ServerSettingsDialog(QDialog, Ui_ServerSettingsDialog):
 
         # allow digits only
         for ch in text:
-            if ch.isdigit():
-                continue
+            if not ch.isdigit():
+                self._is_port_valid = False
+                self.update_apply_button()
+                return
 
+        if not (1 < len(text) <= 5):
             self._is_port_valid = False
-            # reset text to previous valid one
-            self.lineEdit_savings_amount.blockSignals(True)
-            self.lineEdit_savings_amount.setText(
-                self._previous_lineEdit_savings_amount_text
-            )
-            self.lineEdit_savings_amount.blockSignals(False)
-            self.update_apply_button()
-            return
-
-        if 1 < len(text) > 5:
-            self._is_port_valid = False
-            # reset text to previous valid one
-            self.lineEdit_savings_amount.blockSignals(True)
-            self.lineEdit_savings_amount.setText(
-                self._previous_lineEdit_savings_amount_text
-            )
-            self.lineEdit_savings_amount.blockSignals(False)
             self.update_apply_button()
             return
 
