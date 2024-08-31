@@ -3,12 +3,13 @@ import json
 from typing import Any
 
 from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QWidget, QDialog, QMessageBox, QStyledItemDelegate, QStyleOptionViewItem, QMainWindow
+from PySide6.QtWidgets import QWidget, QDialog, QMessageBox, QStyledItemDelegate, QStyleOptionViewItem, QMainWindow, \
+    QTableWidgetItem
 from qasync import asyncSlot
 
 from savings_manager_cli.api_consumers import PostMoneyboxBalanceAddApiConsumer, PostMoneyboxBalanceSubApiConsumer, \
     GetMoneyboxesApiConsumer, PostMoneyboxBalanceTransferApiConsumer, PatchMoneyboxApiConsumer, \
-    DeleteMoneyboxApiConsumer
+    DeleteMoneyboxApiConsumer, GetMoneyboxTransactionsApiConsumer
 
 from src.gui.add_sub_transfer_dialog import AddSubDialog
 from src.gui.moneybox_settings_dialog import MoneyboxSettingsDialog
@@ -39,15 +40,13 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         super().__init__(parent)
         self.setupUi(self)
 
-        self.update_data(
-            {
-                "name_label": name_label,
-                "priority_label": priority_label,
-                "savings_amount_label": savings_amount_label,
-                "savings_target_label": savings_target_label,
-                "balance_label": balance_label,
-            }
-        )
+        self.label_id.setText(str(self.moneybox_id))
+        self.label_name.setText(name_label)
+        self.label_balance.setText(balance_label)
+        self.label_savings_amount.setText(savings_amount_label)
+        self.label_savings_target.setText(savings_target_label)
+        self.label_priority.setText(priority_label)
+
         # connections
         self.pushButton_add_amount.clicked.connect(
             lambda: asyncio.ensure_future(self.on_add_amount_clicked())
@@ -67,13 +66,86 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
 
         self.adjustSize()
 
-    def update_data(self, data: dict[str, Any]):
+    async def load_api_content(self):
+        async with GetMoneyboxTransactionsApiConsumer(
+            moneybox_id=self.moneybox_id,
+            n=None,
+        ) as consumer:
+            self.tableWidget_transaction_logs.clear()
+
+            if consumer.response.status_code == 200:
+                transaction_logs = consumer.response.json()["transaction_logs"]
+                sorted_by_date_transaction_logs = sorted(
+                    transaction_logs,
+                    key=lambda x: x["created_at"],
+                    reverse=True,
+                )
+                transaction_logs = self.prepare_transaction_logs_for_table_insert(
+                    transaction_logs=sorted_by_date_transaction_logs
+                )
+
+                headers = list(transaction_logs[0].keys())
+
+
+                self.tableWidget_transaction_logs.setRowCount(len(transaction_logs))
+                self.tableWidget_transaction_logs.setColumnCount(len(headers))
+
+                # Setze die Spaltenüberschriften
+                self.tableWidget_transaction_logs.setHorizontalHeaderLabels(headers)
+
+                # Füge die Daten in die Tabelle ein, gemappt nach Spaltennamen
+                for row_idx, data_dict in enumerate(transaction_logs):
+                    for col_idx, key in enumerate(headers):
+                        value = data_dict.get(key, "")  # Verwende .get, um einen leeren String zurückzugeben, falls der Key fehlt
+                        self.tableWidget_transaction_logs.setItem(row_idx, col_idx, QTableWidgetItem(str(value)))
+
+
+            elif consumer.response.status_code == 204:
+                # to nothing
+                pass
+            else:
+                message_str = consumer.response.content.decode(encoding="utf-8")
+                message = json.loads(message_str)["message"]
+                QMessageBox.warning(
+                    self,
+                    "Transfer failed",
+                    message,
+                )
+
+    def prepare_transaction_logs_for_table_insert(
+            self,
+            transaction_logs: dict[str, Any],
+    ):
+        return [
+            {
+                "date": transaction_log["created_at"],
+                "trigger": transaction_log["transaction_trigger"],
+                "type": transaction_log["transaction_type"],
+                "counterparty": (
+                    (
+                        f"{transaction_log['counterparty_moneybox_name']} (ID: "
+                        f"{transaction_log['counterparty_moneybox_id']})"
+                    )
+                    if transaction_log['counterparty_moneybox_name'] is not None
+                    else ""
+                ),
+                "amount": transaction_log['amount'],
+                "balance": transaction_log['balance'],
+                "description": transaction_log["description"],
+            }
+            for transaction_log in transaction_logs
+
+        ]
+
+    async def update_data(self, data: dict[str, Any]):
         self.label_id.setText(str(self.moneybox_id))
         self.label_name.setText(data["name_label"])
         self.label_balance.setText(data["balance_label"])
         self.label_savings_amount.setText(data["savings_amount_label"])
         self.label_savings_target.setText(data["savings_target_label"])
         self.label_priority.setText(data["priority_label"])
+
+        await self.load_api_content()
 
     @asyncSlot()
     async def on_delete_moneybox_clicked(self):
@@ -158,7 +230,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     )
 
                     data = consumer.response.json()
-                    self.update_data(
+                    await self.update_data(
                         {
                             "moneybox_id": self.moneybox_id,
                             "name_label": data["name"],
@@ -209,7 +281,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     )
 
                     data = consumer.response.json()
-                    self.update_data(
+                    await self.update_data(
                         {
                             "moneybox_id": self.moneybox_id,
                             "name_label": data["name"],
@@ -260,7 +332,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     )
 
                     data = consumer.response.json()
-                    self.update_data(
+                    await self.update_data(
                         {
                             "moneybox_id": self.moneybox_id,
                             "name_label": data["name"],

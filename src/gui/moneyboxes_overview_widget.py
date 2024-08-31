@@ -21,20 +21,27 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
         self.setupUi(self)
 
 
-    async def load_api_content(self, *args, **kwargs):
+    async def load_api_content(self):
         """Load API Consumer specific content"""
 
         async with GetMoneyboxesApiConsumer() as consumer:
             if consumer.response.status_code == 200:
                 moneyboxes = consumer.response.json()["moneyboxes"]
             else:
-                # TODO: show error? label? like: No Data ...
+                message_str = consumer.response.content.decode(encoding="utf-8")
+                message = json.loads(message_str)["message"]
+                QMessageBox.warning(
+                    self,
+                    "Transfer failed",
+                    message,
+                )
                 return
 
             priority_sorted_moneyboxes = sorted(moneyboxes, key=lambda moneybox: moneybox["priority"])
 
             max_col_index = 0
             row_index = 0
+            i = 0
 
             for i, moneybox in enumerate(priority_sorted_moneyboxes[1:]):
                 row_index = i // 4
@@ -88,6 +95,7 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
             add_new_moneybox_button.clicked.connect(
                 lambda : asyncio.ensure_future(self.on_new_moneybox_clicked()),
             )
+
 
             i += 1
             row_index = i // 4

@@ -24,7 +24,7 @@ class Ui_MoneyboxOverviewWidget(object):
     def setupUi(self, MoneyboxOverviewWidget):
         if not MoneyboxOverviewWidget.objectName():
             MoneyboxOverviewWidget.setObjectName(u"MoneyboxOverviewWidget")
-        MoneyboxOverviewWidget.resize(716, 417)
+        MoneyboxOverviewWidget.resize(716, 398)
         self.horizontalLayout = QHBoxLayout(MoneyboxOverviewWidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalSpacer = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -56,11 +56,6 @@ class Ui_MoneyboxOverviewWidget(object):
         self.horizontalSpacer_3 = QSpacerItem(0, 0, QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_3)
-
-        self.pushButton_all_transaction_logs = QPushButton(MoneyboxOverviewWidget)
-        self.pushButton_all_transaction_logs.setObjectName(u"pushButton_all_transaction_logs")
-
-        self.horizontalLayout_2.addWidget(self.pushButton_all_transaction_logs)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -229,7 +224,8 @@ class Ui_MoneyboxOverviewWidget(object):
         self.tableWidget_transaction_logs.setObjectName(u"tableWidget_transaction_logs")
         self.tableWidget_transaction_logs.setFrameShape(QFrame.Shape.StyledPanel)
         self.tableWidget_transaction_logs.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustIgnored)
-        self.tableWidget_transaction_logs.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.tableWidget_transaction_logs.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
+        self.tableWidget_transaction_logs.setSelectionMode(QAbstractItemView.SelectionMode.ExtendedSelection)
         self.tableWidget_transaction_logs.setSortingEnabled(False)
 
         self.verticalLayout.addWidget(self.tableWidget_transaction_logs)
@@ -246,14 +242,13 @@ class Ui_MoneyboxOverviewWidget(object):
 
         self.retranslateUi(MoneyboxOverviewWidget)
 
-        QMetaObject.connectSlotsByName(MoneyboxOverviewWidget)
+        #QMetaObject.connectSlotsByName(MoneyboxOverviewWidget)
     # setupUi
 
     def retranslateUi(self, MoneyboxOverviewWidget):
         MoneyboxOverviewWidget.setWindowTitle(QCoreApplication.translate("MoneyboxOverviewWidget", u"Form", None))
         self.label.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Moneybox:", None))
         self.label_name.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Overflow Moneybox", None))
-        self.pushButton_all_transaction_logs.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Show all transaction logs", None))
         self.label_3.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"ID:", None))
         self.label_id.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"1", None))
         self.label_5.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Balance:", None))
@@ -269,7 +264,7 @@ class Ui_MoneyboxOverviewWidget(object):
         self.pushButton_settings.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Edit &Settings", None))
         self.pushButton_add_amount.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"&Add Amount", None))
         self.pushButton_transfer_amount.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"&Transfer Amount", None))
-        self.label_4.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Last Transactions", None))
+        self.label_4.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Transactions", None))
         ___qtablewidgetitem = self.tableWidget_transaction_logs.horizontalHeaderItem(0)
         ___qtablewidgetitem.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"date", None));
         ___qtablewidgetitem1 = self.tableWidget_transaction_logs.horizontalHeaderItem(1)
