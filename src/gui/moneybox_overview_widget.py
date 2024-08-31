@@ -3,11 +3,12 @@ import json
 from typing import Any
 
 from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QWidget, QDialog, QMessageBox, QStyledItemDelegate, QStyleOptionViewItem
+from PySide6.QtWidgets import QWidget, QDialog, QMessageBox, QStyledItemDelegate, QStyleOptionViewItem, QMainWindow
 from qasync import asyncSlot
 
 from savings_manager_cli.api_consumers import PostMoneyboxBalanceAddApiConsumer, PostMoneyboxBalanceSubApiConsumer, \
-    GetMoneyboxesApiConsumer, PostMoneyboxBalanceTransferApiConsumer, PatchMoneyboxApiConsumer
+    GetMoneyboxesApiConsumer, PostMoneyboxBalanceTransferApiConsumer, PatchMoneyboxApiConsumer, \
+    DeleteMoneyboxApiConsumer
 
 from src.gui.add_sub_transfer_dialog import AddSubDialog
 from src.gui.moneybox_settings_dialog import MoneyboxSettingsDialog
@@ -23,6 +24,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
 
     def __init__(
             self,
+            parent_window: QMainWindow,
             moneybox_id: int,
             name_label: str,
             priority_label: str,
@@ -31,6 +33,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
             balance_label: str,
             parent: QWidget|None = None,
     ):
+        self.parent_window = parent_window
         self.moneybox_id = moneybox_id
 
         super().__init__(parent)
@@ -58,6 +61,9 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         self.pushButton_settings.clicked.connect(
             lambda: asyncio.ensure_future(self.on_edit_settings_clicked())
         )
+        self.pushButton_delete_moneybox.clicked.connect(
+            lambda: asyncio.ensure_future(self.on_delete_moneybox_clicked())
+        )
 
         self.adjustSize()
 
@@ -68,6 +74,42 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         self.label_savings_amount.setText(data["savings_amount_label"])
         self.label_savings_target.setText(data["savings_target_label"])
         self.label_priority.setText(data["priority_label"])
+
+    @asyncSlot()
+    async def on_delete_moneybox_clicked(self):
+        moneybox_name = self.label_name.text()
+
+        # Zeige die Bestätigungsnachricht
+        result = QMessageBox.question(
+            self,
+            "Delete Moneybox",
+            f"Do you want to delete the Moneybox '{moneybox_name}'?",
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No  # Default answwer
+        )
+
+        # Verarbeite die Antwort
+        if result == QMessageBox.Yes:
+            async with DeleteMoneyboxApiConsumer(
+                moneybox_id=self.moneybox_id,
+            ) as consumer:
+                if consumer.response.status_code == 204:
+                    QMessageBox.information(
+                        self,
+                        "Deleted moneybox",
+                        f"Deleted moneybox '{moneybox_name}' successfully!",
+                    )
+
+                    await self.parent_window.load_moneyboxes_overview_widget()
+                else:
+                    message_str = consumer.response.content.decode(encoding="utf-8")
+                    message = json.loads(message_str)["message"]
+                    QMessageBox.warning(
+                        self,
+                        "Deletion failed",
+                        f"{message} (Amounts are expressed in cents.)",
+                    )
+
 
     @asyncSlot()
     async def on_edit_settings_clicked(self):

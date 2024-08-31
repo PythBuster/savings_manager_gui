@@ -48,6 +48,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if consumer.response.status_code == 200:
                 data = consumer.response.json()
                 moneybox_overview_widget = MoneyboxOverviewWidget(
+                    parent_window=self,
                     moneybox_id=data["id"],
                     name_label=data["name"],
                     priority_label=str(data["priority"]),
