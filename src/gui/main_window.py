@@ -1,10 +1,12 @@
 import asyncio
 import json
 
-from PySide6.QtWidgets import QWidget, QMainWindow, QMessageBox, QPushButton, QLabel, QDialog
-from pygments.lexers import data
+from PySide6.QtWidgets import (QDialog, QMainWindow, QMessageBox,
+                               QWidget)
 from qasync import asyncClose, asyncSlot
-from savings_manager_cli.api_consumers import GetMoneyboxApiConsumer, GetAppSettingsApiConsumer, PatchAppSettingsApiConsumer
+from savings_manager_cli.api_consumers import (GetAppSettingsApiConsumer,
+                                               GetMoneyboxApiConsumer,
+                                               PatchAppSettingsApiConsumer)
 
 from src.gui.app_settings_dialog import AppSettingsDialog
 from src.gui.moneybox_overview_widget import MoneyboxOverviewWidget
@@ -15,14 +17,13 @@ from src.utils import get_app_data
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
-    def __init__(self, parent: QWidget|None = None):
+    def __init__(self, parent: QWidget | None = None):
         super().__init__(parent)
         self.setupUi(self)
 
         app_data = get_app_data()
         app_title = f"Savings Manager GUI v{app_data['version']}"
         self.setWindowTitle(app_title)
-
 
         # connections
         self.actionAbout_Qt.triggered.connect(
@@ -58,9 +59,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 match data["overflow_moneybox_automated_savings_mode"]:
                     case "collect":
-                        mode ="collect"
+                        mode = "collect"
                     case "add_to_automated_savings_amount":
-                        mode ="add"
+                        mode = "add"
                     case "fill_up_limited_moneyboxes":
                         mode = "fill"
                     case _:
@@ -81,8 +82,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 result = app_settings_dialog.exec()
 
                 if result == QDialog.Accepted:
-                    savings_amount_str = app_settings_dialog.lineEdit_savings_amount.text()
-                    savings_amount = int(savings_amount_str.replace(",", "").replace(".", ""))
+                    savings_amount_str = (
+                        app_settings_dialog.lineEdit_savings_amount.text()
+                    )
+                    savings_amount = int(
+                        savings_amount_str.replace(",", "").replace(".", "")
+                    )
 
                     match app_settings_dialog.comboBox_overflow_moneybox_modes.currentText():
                         case "collect":
@@ -97,11 +102,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             )
 
                     async with PatchAppSettingsApiConsumer(
-                        send_reports_via_email = app_settings_dialog.checkBox_send_reports_via_email.isChecked(),
-                        user_email_address = app_settings_dialog.lineEdit_user_email_address.text(),
-                        is_automated_saving_active = app_settings_dialog.checkBox_enable_automated_savings.isChecked(),
-                        savings_amount = savings_amount,
-                        overflow_moneybox_automated_savings_mode = mode,
+                        send_reports_via_email=app_settings_dialog.checkBox_send_reports_via_email.isChecked(),
+                        user_email_address=app_settings_dialog.lineEdit_user_email_address.text(),
+                        is_automated_saving_active=app_settings_dialog.checkBox_enable_automated_savings.isChecked(),
+                        savings_amount=savings_amount,
+                        overflow_moneybox_automated_savings_mode=mode,
                     ) as consumer:
                         if consumer.response.status_code == 200:
                             QMessageBox.information(
@@ -110,7 +115,9 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 "Updated AppSettings successfully.",
                             )
                         else:
-                            message_str = consumer.response.content.decode(encoding="utf-8")
+                            message_str = consumer.response.content.decode(
+                                encoding="utf-8"
+                            )
                             message = json.loads(message_str)["message"]
                             QMessageBox.warning(
                                 self,
@@ -126,7 +133,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     message,
                 )
 
-    async def load_moneybox_overview_widget(self, moneybox_id:int ):
+    async def load_moneybox_overview_widget(self, moneybox_id: int):
         async with GetMoneyboxApiConsumer(moneybox_id=moneybox_id) as consumer:
             if consumer.response.status_code == 200:
                 data = consumer.response.json()
@@ -143,9 +150,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         if data["savings_target"] is None
                         else f"{data['savings_target'] / 100:.2f} €".replace(".", ",")
                     ),
-                    balance_label=(
-                        f"{data['balance'] / 100:.2f} €".replace(".", ",")
-                    ),
+                    balance_label=(f"{data['balance'] / 100:.2f} €".replace(".", ",")),
                 )
                 await self.switch_main_board_widget(child=moneybox_overview_widget)
             else:
@@ -177,5 +182,3 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @asyncClose
     async def closeEvent(self, event):
         pass
-
-

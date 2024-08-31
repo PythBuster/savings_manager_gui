@@ -1,10 +1,9 @@
-from itertools import count
-
+from pydantic import BaseModel, EmailStr
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QDialog, QWidget, QMessageBox
-from pydantic import EmailStr, BaseModel
+from PySide6.QtWidgets import QDialog, QMessageBox, QWidget
 
 from src.gui.ui.ui_app_settings_dialog import Ui_AppSettingsDialog
+
 
 class UserModel(BaseModel):
     email: EmailStr
@@ -12,14 +11,14 @@ class UserModel(BaseModel):
 
 class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
     def __init__(
-            self,
-            savings_amount_label: str,
-            enable_automated_savings: bool,
-            send_reports_via_email: bool,
-            user_email_address: str,
-            overflow_moneybox_mode: str,
-            parent: QWidget|None = None,
-):
+        self,
+        savings_amount_label: str,
+        enable_automated_savings: bool,
+        send_reports_via_email: bool,
+        user_email_address: str,
+        overflow_moneybox_mode: str,
+        parent: QWidget | None = None,
+    ):
         super().__init__(parent)
         self.setupUi(self)
 
@@ -32,7 +31,6 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
         self._previous_lineEdit_user_email_address_text = user_email_address
         self.checkBox_send_reports_via_email.setChecked(send_reports_via_email)
         self.checkBox_enable_automated_savings.setChecked(enable_automated_savings)
-
 
         # Finde den Index des Items in der ComboBox
         index = self.comboBox_overflow_moneybox_modes.findText(overflow_moneybox_mode)
@@ -52,8 +50,12 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
         self.pushButton_apply.clicked.connect(self.accept)
         self.pushButton_cancel.clicked.connect(self.reject)
         self.lineEdit_savings_amount.textChanged.connect(self.validate_amount)
-        self.lineEdit_user_email_address.textChanged.connect(self.validate_email_address)
-        self.checkBox_send_reports_via_email.stateChanged.connect(self.handle_checkbox_state_change)
+        self.lineEdit_user_email_address.textChanged.connect(
+            self.validate_email_address
+        )
+        self.checkBox_send_reports_via_email.stateChanged.connect(
+            self.handle_checkbox_state_change
+        )
         self.adjustSize()
 
     def handle_checkbox_state_change(self, state):
@@ -90,27 +92,31 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
         if text.count(",") > 1 or text == ",":
             # reset text to previous valid one
             self.lineEdit_savings_amount.blockSignals(True)
-            self.lineEdit_savings_amount.setText(self._previous_lineEdit_savings_amount_text)
+            self.lineEdit_savings_amount.setText(
+                self._previous_lineEdit_savings_amount_text
+            )
             self.lineEdit_savings_amount.blockSignals(False)
             return
 
         for ch in text:
             if ch.isdigit() or ch == ",":
                 continue
-            else:
-                # reset text to previous valid one
-                self.lineEdit_savings_amount.blockSignals(True)
-                self.lineEdit_savings_amount.setText(self._previous_lineEdit_savings_amount_text)
-                self.lineEdit_savings_amount.blockSignals(False)
-                return
+
+            # reset text to previous valid one
+            self.lineEdit_savings_amount.blockSignals(True)
+            self.lineEdit_savings_amount.setText(
+                self._previous_lineEdit_savings_amount_text
+            )
+            self.lineEdit_savings_amount.blockSignals(False)
+            return
 
         if not text:
             cleaned_text = "0,00"
         else:
-            cleaned_text = text.replace(",", "").replace(".", "").lstrip('0') or "0"
+            cleaned_text = text.replace(",", "").replace(".", "").lstrip("0") or "0"
             # Formatierung der Eingabe
             while len(cleaned_text) < 3:
-                cleaned_text = '0' + cleaned_text
+                cleaned_text = "0" + cleaned_text
             cleaned_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
 
         # Setze den Text ohne die TextChanged-Signal erneut auszulösen

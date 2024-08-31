@@ -1,19 +1,23 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QWidget, QDialog, QLineEdit, QStyledItemDelegate, QStyleOptionViewItem
+from PySide6.QtWidgets import (QDialog, QLineEdit, QStyledItemDelegate,
+                               QStyleOptionViewItem, QWidget)
 
-from src.gui.ui.ui_add_sub_transfer_amount_dialog import Ui_AddSubTransferAmountDialog
+from src.gui.ui.ui_add_sub_transfer_amount_dialog import \
+    Ui_AddSubTransferAmountDialog
 
 
 class RightAlignedDelegate(QStyledItemDelegate):
     def initStyleOption(self, option: QStyleOptionViewItem, index):
         super().initStyleOption(option, index)
-        option.displayAlignment = Qt.AlignRight | Qt.AlignVCenter  # Right-align the text
+        option.displayAlignment = (
+            Qt.AlignRight | Qt.AlignVCenter
+        )  # Right-align the text
 
 
 class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
     def __init__(
-            self,
-            parent: QWidget|None = None,
+        self,
+        parent: QWidget | None = None,
     ):
         super().__init__(parent)
         self.setupUi(self)
@@ -34,6 +38,8 @@ class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
         # Set the custom delegate for right-aligned text
         delegate = RightAlignedDelegate(self.comboBox_moneyboxes)
         self.comboBox_moneyboxes.setItemDelegate(delegate)
+
+        self._is_amount_valid = False
 
         self._previous_lineEdit_amount_text = self.lineEdit_amount.text()
         # connections
@@ -58,25 +64,25 @@ class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
         for ch in text:
             if ch.isdigit() or ch == ",":
                 continue
-            else:
-                # reset text to previous valid one
-                self.lineEdit_amount.blockSignals(True)
-                self.lineEdit_amount.setText(self._previous_lineEdit_amount_text)
-                self.lineEdit_amount.blockSignals(False)
 
-                if not self._previous_lineEdit_amount_text:
-                    self._is_amount_valid = False
-                    self.pushButton_apply.setEnabled(self._is_amount_valid)
+            # reset text to previous valid one
+            self.lineEdit_amount.blockSignals(True)
+            self.lineEdit_amount.setText(self._previous_lineEdit_amount_text)
+            self.lineEdit_amount.blockSignals(False)
 
-                return
+            if not self._previous_lineEdit_amount_text:
+                self._is_amount_valid = False
+                self.pushButton_apply.setEnabled(self._is_amount_valid)
+
+            return
 
         if not text:
             cleaned_text = "0,00"
         else:
-            cleaned_text = text.replace(",", "").replace(".", "").lstrip('0') or "0"
+            cleaned_text = text.replace(",", "").replace(".", "").lstrip("0") or "0"
             # Formatierung der Eingabe
             while len(cleaned_text) < 3:
-                cleaned_text = '0' + cleaned_text
+                cleaned_text = "0" + cleaned_text
             cleaned_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
 
         # Setze den Text ohne die TextChanged-Signal erneut auszulösen

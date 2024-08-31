@@ -2,20 +2,19 @@ import asyncio
 import json
 from typing import Any
 
-from PySide6.QtCore import Signal, Qt
-from PySide6.QtWidgets import QWidget, QDialog, QMessageBox, QStyledItemDelegate, QStyleOptionViewItem, QMainWindow, \
-    QTableWidgetItem
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import (QDialog, QMainWindow, QMessageBox,
+                               QTableWidgetItem, QWidget)
 from qasync import asyncSlot
-
-from savings_manager_cli.api_consumers import PostMoneyboxBalanceAddApiConsumer, PostMoneyboxBalanceSubApiConsumer, \
-    GetMoneyboxesApiConsumer, PostMoneyboxBalanceTransferApiConsumer, PatchMoneyboxApiConsumer, \
-    DeleteMoneyboxApiConsumer, GetMoneyboxTransactionsApiConsumer
+from savings_manager_cli.api_consumers import (
+    DeleteMoneyboxApiConsumer, GetMoneyboxesApiConsumer,
+    GetMoneyboxTransactionsApiConsumer, PatchMoneyboxApiConsumer,
+    PostMoneyboxBalanceAddApiConsumer, PostMoneyboxBalanceSubApiConsumer,
+    PostMoneyboxBalanceTransferApiConsumer)
 
 from src.gui.add_sub_transfer_dialog import AddSubDialog
 from src.gui.moneybox_settings_dialog import MoneyboxSettingsDialog
 from src.gui.ui.ui_moneybox_overview_widget import Ui_MoneyboxOverviewWidget
-
-
 
 
 class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
@@ -24,15 +23,15 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
     transfer_amount_clicked = Signal(int)
 
     def __init__(
-            self,
-            parent_window: QMainWindow,
-            moneybox_id: int,
-            name_label: str,
-            priority_label: str,
-            savings_amount_label: str,
-            savings_target_label: str,
-            balance_label: str,
-            parent: QWidget|None = None,
+        self,
+        parent_window: QMainWindow,
+        moneybox_id: int,
+        name_label: str,
+        priority_label: str,
+        savings_amount_label: str,
+        savings_target_label: str,
+        balance_label: str,
+        parent: QWidget | None = None,
     ):
         self.parent_window = parent_window
         self.moneybox_id = moneybox_id
@@ -61,9 +60,11 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
             self.pushButton_settings.setVisible(False)
         else:
             self.pushButton_settings.clicked.connect(
-                lambda: asyncio.ensure_future(self.on_edit_settings_clicked(
-                    is_overflow_moneybox=False,
-                ))
+                lambda: asyncio.ensure_future(
+                    self.on_edit_settings_clicked(
+                        is_overflow_moneybox=False,
+                    )
+                )
             )
         # connections
         self.pushButton_add_amount.clicked.connect(
@@ -102,7 +103,6 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
 
                 headers = list(transaction_logs[0].keys())
 
-
                 self.tableWidget_transaction_logs.setRowCount(len(transaction_logs))
                 self.tableWidget_transaction_logs.setColumnCount(len(headers))
 
@@ -112,8 +112,12 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                 # Füge die Daten in die Tabelle ein, gemappt nach Spaltennamen
                 for row_idx, data_dict in enumerate(transaction_logs):
                     for col_idx, key in enumerate(headers):
-                        value = data_dict.get(key, "")  # Verwende .get, um einen leeren String zurückzugeben, falls der Key fehlt
-                        self.tableWidget_transaction_logs.setItem(row_idx, col_idx, QTableWidgetItem(str(value)))
+                        value = data_dict.get(
+                            key, ""
+                        )  # Verwende .get, um einen leeren String zurückzugeben, falls der Key fehlt
+                        self.tableWidget_transaction_logs.setItem(
+                            row_idx, col_idx, QTableWidgetItem(str(value))
+                        )
 
             elif consumer.response.status_code == 204:
                 # to nothing
@@ -128,8 +132,8 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                 )
 
     def prepare_transaction_logs_for_table_insert(
-            self,
-            transaction_logs: dict[str, Any],
+        self,
+        transaction_logs: dict[str, Any],
     ):
         return [
             {
@@ -141,15 +145,14 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                         f"{transaction_log['counterparty_moneybox_name']} (ID: "
                         f"{transaction_log['counterparty_moneybox_id']})"
                     )
-                    if transaction_log['counterparty_moneybox_name'] is not None
+                    if transaction_log["counterparty_moneybox_name"] is not None
                     else ""
                 ),
-                "amount": transaction_log['amount'],
-                "balance": transaction_log['balance'],
+                "amount": transaction_log["amount"],
+                "balance": transaction_log["balance"],
                 "description": transaction_log["description"],
             }
             for transaction_log in transaction_logs
-
         ]
 
     async def update_data(self, data: dict[str, Any]):
@@ -172,7 +175,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
             "Delete Moneybox",
             f"Do you want to delete the Moneybox '{moneybox_name}'?",
             QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No  # Default answwer
+            QMessageBox.No,  # Default answwer
         )
 
         # Verarbeite die Antwort
@@ -197,17 +200,20 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                         f"{message} (Amounts are expressed in cents.)",
                     )
 
-
     @asyncSlot()
     async def on_edit_settings_clicked(self, is_overflow_moneybox: bool):
         if self.label_savings_target.text() == "No Limit":
             savings_target_label = ""
         else:
-            savings_target_label = self.label_savings_target.text().replace("€", "").strip()
+            savings_target_label = (
+                self.label_savings_target.text().replace("€", "").strip()
+            )
 
         dialog = MoneyboxSettingsDialog(
             name_label=self.label_name.text(),
-            savings_amount_label=self.label_savings_amount.text().replace("€","").strip(),
+            savings_amount_label=self.label_savings_amount.text()
+            .replace("€", "")
+            .strip(),
             savings_target_label=savings_target_label,
         )
 
@@ -224,8 +230,12 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
 
         if result == QDialog.Accepted:
             name = dialog.lineEdit_name.text()
-            savings_amount = int(dialog.lineEdit_savings_amount.text().replace(",", "").replace(".", ""))
-            savings_target = dialog.lineEdit_savings_target.text().replace(",", "").replace(".", "")
+            savings_amount = int(
+                dialog.lineEdit_savings_amount.text().replace(",", "").replace(".", "")
+            )
+            savings_target = (
+                dialog.lineEdit_savings_target.text().replace(",", "").replace(".", "")
+            )
 
             if savings_target:
                 consumer = PatchMoneyboxApiConsumer(
@@ -259,12 +269,16 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
                             "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €".replace(".", ",")
+                                f"{data['savings_amount'] / 100:.2f} €".replace(
+                                    ".", ","
+                                )
                             ),
                             "savings_target_label": (
                                 "No Limit"
                                 if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €".replace(".", ",")
+                                else f"{data['savings_target'] / 100:.2f} €".replace(
+                                    ".", ","
+                                )
                             ),
                             "balance_label": (
                                 f"{data['balance'] / 100:.2f} €".replace(".", ",")
@@ -288,13 +302,13 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         result = dialog.exec()
 
         if result == QDialog.Accepted:
-            amount = int(dialog.lineEdit_amount.text().replace(",", "").replace(".", ""))
+            amount = int(
+                dialog.lineEdit_amount.text().replace(",", "").replace(".", "")
+            )
             description = dialog.lineEdit_description.text()
 
             async with PostMoneyboxBalanceAddApiConsumer(
-                moneybox_id=self.moneybox_id,
-                amount=amount,
-                description=description
+                moneybox_id=self.moneybox_id, amount=amount, description=description
             ) as consumer:
                 if consumer.response.status_code == 200:
                     QMessageBox.information(
@@ -310,12 +324,16 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
                             "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €".replace(".", ",")
+                                f"{data['savings_amount'] / 100:.2f} €".replace(
+                                    ".", ","
+                                )
                             ),
                             "savings_target_label": (
                                 "No Limit"
                                 if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €".replace(".", ",")
+                                else f"{data['savings_target'] / 100:.2f} €".replace(
+                                    ".", ","
+                                )
                             ),
                             "balance_label": (
                                 f"{data['balance'] / 100:.2f} €".replace(".", ",")
@@ -339,13 +357,13 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         result = dialog.exec()
 
         if result == QDialog.Accepted:
-            amount = int(dialog.lineEdit_amount.text().replace(",", "").replace(".", ""))
+            amount = int(
+                dialog.lineEdit_amount.text().replace(",", "").replace(".", "")
+            )
             description = dialog.lineEdit_description.text()
 
             async with PostMoneyboxBalanceSubApiConsumer(
-                    moneybox_id=self.moneybox_id,
-                    amount=amount,
-                    description=description
+                moneybox_id=self.moneybox_id, amount=amount, description=description
             ) as consumer:
                 if consumer.response.status_code == 200:
                     QMessageBox.information(
@@ -361,12 +379,16 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
                             "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €".replace(".", ",")
+                                f"{data['savings_amount'] / 100:.2f} €".replace(
+                                    ".", ","
+                                )
                             ),
                             "savings_target_label": (
                                 "No Limit"
                                 if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €".replace(".", ",")
+                                else f"{data['savings_target'] / 100:.2f} €".replace(
+                                    ".", ","
+                                )
                             ),
                             "balance_label": (
                                 f"{data['balance'] / 100:.2f} €".replace(".", ",")
@@ -391,11 +413,15 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         async with GetMoneyboxesApiConsumer() as consumer:
             if consumer.response.status_code == 200:
                 moneyboxes = consumer.response.json()["moneyboxes"]
-                sorted_by_priority_moneyboxes = sorted(moneyboxes, key=lambda m: m["priority"])
+                sorted_by_priority_moneyboxes = sorted(
+                    moneyboxes, key=lambda m: m["priority"]
+                )
 
                 for moneybox in sorted_by_priority_moneyboxes:
                     if self.moneybox_id != moneybox["id"]:
-                        dialog.comboBox_moneyboxes.addItem(f"{moneybox['name']} (ID: {moneybox['id']})")
+                        dialog.comboBox_moneyboxes.addItem(
+                            f"{moneybox['name']} (ID: {moneybox['id']})"
+                        )
             else:
                 message_str = consumer.response.content.decode(encoding="utf-8")
                 message = json.loads(message_str)["message"]
@@ -411,15 +437,19 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         result = dialog.exec()
 
         if result == QDialog.Accepted:
-            amount = int(dialog.lineEdit_amount.text().replace(",", "").replace(".", ""))
+            amount = int(
+                dialog.lineEdit_amount.text().replace(",", "").replace(".", "")
+            )
             description = dialog.lineEdit_description.text()
-            to_moneybox_id = int(dialog.comboBox_moneyboxes.currentText().split(":")[-1][:-1].strip())
+            to_moneybox_id = int(
+                dialog.comboBox_moneyboxes.currentText().split(":")[-1][:-1].strip()
+            )
 
             async with PostMoneyboxBalanceTransferApiConsumer(
-                    from_moneybox_id=self.moneybox_id,
-                    to_moneybox_id=to_moneybox_id,
-                    amount=amount,
-                    description=description
+                from_moneybox_id=self.moneybox_id,
+                to_moneybox_id=to_moneybox_id,
+                amount=amount,
+                description=description,
             ) as consumer:
                 if consumer.response.status_code == 204:
                     QMessageBox.information(
@@ -428,7 +458,16 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                         "Transferred amount successfully!",
                     )
 
-                    new_balance = int(self.label_balance.text().replace(",", "").replace(".", "").replace("€", "").strip()) - amount
+                    new_balance = (
+                        int(
+                            self.label_balance.text()
+                            .replace(",", "")
+                            .replace(".", "")
+                            .replace("€", "")
+                            .strip()
+                        )
+                        - amount
+                    )
                     self.label_balance.setText(
                         f"{new_balance / 100:.2f} €".replace(".", ",")
                     )

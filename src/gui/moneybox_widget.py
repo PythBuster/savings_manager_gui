@@ -9,14 +9,14 @@ class MoneyboxWidget(QWidget, Ui_MoneyBoxWidget):
     enter_moneybox = Signal(int)
 
     def __init__(
-            self,
-            moneybox_id: int,
-            name_label: str,
-            priority_label: str,
-            savings_amount_label: str,
-            savings_target_label: str,
-            balance_label: str,
-            parent: QWidget|None = None,
+        self,
+        moneybox_id: int,
+        name_label: str,
+        priority_label: str,
+        savings_amount_label: str,
+        savings_target_label: str,
+        balance_label: str,
+        parent: QWidget | None = None,
     ):
         self.moneybox_id = moneybox_id
 
