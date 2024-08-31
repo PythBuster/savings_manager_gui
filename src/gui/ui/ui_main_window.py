@@ -90,7 +90,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.action_Exit.triggered.connect(MainWindow.close)
 
-        QMetaObject.connectSlotsByName(MainWindow)
+        #QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):

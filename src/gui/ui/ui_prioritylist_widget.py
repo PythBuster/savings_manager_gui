@@ -95,7 +95,7 @@ class Ui_PriorityListWidget(object):
 
         self.retranslateUi(PriorityListWidget)
 
-        QMetaObject.connectSlotsByName(PriorityListWidget)
+        #QMetaObject.connectSlotsByName(PriorityListWidget)
     # setupUi
 
     def retranslateUi(self, PriorityListWidget):

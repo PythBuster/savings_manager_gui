@@ -127,7 +127,7 @@ class Ui_AppSettingsDialog(object):
 
         self.retranslateUi(AppSettingsDialog)
 
-        QMetaObject.connectSlotsByName(AppSettingsDialog)
+        #QMetaObject.connectSlotsByName(AppSettingsDialog)
     # setupUi
 
     def retranslateUi(self, AppSettingsDialog):

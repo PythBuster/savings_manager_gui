@@ -15,10 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QFormLayout,
-    QFrame, QHBoxLayout, QLabel, QLineEdit,
-    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QFormLayout, QFrame,
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_MoneyboxSettingsDialog(object):
     def setupUi(self, MoneyboxSettingsDialog):
@@ -83,31 +82,6 @@ class Ui_MoneyboxSettingsDialog(object):
         self.verticalLayout_3 = QVBoxLayout(self.frame_overflow_moneybox_settings)
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.formLayout = QFormLayout()
-        self.formLayout.setObjectName(u"formLayout")
-        self.formLayout.setLabelAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-        self.formLayout.setFormAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTop|Qt.AlignmentFlag.AlignTrailing)
-        self.comboBox_modes = QComboBox(self.frame_overflow_moneybox_settings)
-        self.comboBox_modes.addItem("")
-        self.comboBox_modes.addItem("")
-        self.comboBox_modes.addItem("")
-        self.comboBox_modes.setObjectName(u"comboBox_modes")
-        sizePolicy = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.comboBox_modes.sizePolicy().hasHeightForWidth())
-        self.comboBox_modes.setSizePolicy(sizePolicy)
-
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.comboBox_modes)
-
-        self.label_4 = QLabel(self.frame_overflow_moneybox_settings)
-        self.label_4.setObjectName(u"label_4")
-
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_4)
-
-
-        self.verticalLayout_3.addLayout(self.formLayout)
-
 
         self.verticalLayout.addWidget(self.frame_overflow_moneybox_settings)
 
@@ -138,7 +112,7 @@ class Ui_MoneyboxSettingsDialog(object):
 
         self.retranslateUi(MoneyboxSettingsDialog)
 
-        QMetaObject.connectSlotsByName(MoneyboxSettingsDialog)
+        #QMetaObject.connectSlotsByName(MoneyboxSettingsDialog)
     # setupUi
 
     def retranslateUi(self, MoneyboxSettingsDialog):
@@ -146,11 +120,6 @@ class Ui_MoneyboxSettingsDialog(object):
         self.label.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"Name: ", None))
         self.label_2.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"Savings Amount: ", None))
         self.label_3.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"Savings Target: ", None))
-        self.comboBox_modes.setItemText(0, QCoreApplication.translate("MoneyboxSettingsDialog", u"collect", None))
-        self.comboBox_modes.setItemText(1, QCoreApplication.translate("MoneyboxSettingsDialog", u"add", None))
-        self.comboBox_modes.setItemText(2, QCoreApplication.translate("MoneyboxSettingsDialog", u"fill", None))
-
-        self.label_4.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"Mode:                     ", None))
         self.pushButton_apply.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"&Apply", None))
         self.pushButton_cancel.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"&Cancel", None))
     # retranslateUi
