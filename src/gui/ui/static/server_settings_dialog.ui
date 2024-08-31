@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AppSettingsDialog</class>
- <widget class="QDialog" name="AppSettingsDialog">
+ <class>ServerSettingsDialog</class>
+ <widget class="QDialog" name="ServerSettingsDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>457</width>
-    <height>247</height>
+    <width>280</width>
+    <height>153</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -15,7 +15,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <widget class="QFrame" name="frame_app_settings">
+    <widget class="QFrame" name="frame_general_settings">
      <property name="styleSheet">
       <string notr="true">border: 0px;</string>
      </property>
@@ -43,78 +43,32 @@
         <property name="bottomMargin">
          <number>0</number>
         </property>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label">
+          <property name="text">
+           <string>Host</string>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="1">
-         <widget class="QLineEdit" name="lineEdit_savings_amount">
+         <widget class="QLineEdit" name="lineEdit_host">
           <property name="styleSheet">
            <string notr="true">border: 1px solid black;</string>
           </property>
          </widget>
         </item>
         <item row="1" column="0">
-         <widget class="QCheckBox" name="checkBox_enable_automated_savings">
-          <property name="text">
-           <string>Enable Automated Savings</string>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="0">
-         <widget class="QCheckBox" name="checkBox_send_reports_via_email">
-          <property name="text">
-           <string>Send Reports via Email</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
          <widget class="QLabel" name="label_2">
-          <property name="frameShape">
-           <enum>QFrame::Shape::NoFrame</enum>
-          </property>
           <property name="text">
-           <string>User Email Address: </string>
+           <string>Port: </string>
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="lineEdit_user_email_address">
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="lineEdit_port">
           <property name="styleSheet">
            <string notr="true">border: 1px solid black;</string>
           </property>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="text">
-           <string>Overflow Mneybox Mode: </string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Savings Amounts: </string>
-          </property>
-         </widget>
-        </item>
-        <item row="4" column="1">
-         <widget class="QComboBox" name="comboBox_overflow_moneybox_modes">
-          <property name="styleSheet">
-           <string notr="true">border: 1px solid black;</string>
-          </property>
-          <item>
-           <property name="text">
-            <string>collect</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>add</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>fill</string>
-           </property>
-          </item>
          </widget>
         </item>
        </layout>
@@ -189,7 +143,7 @@
      <item>
       <widget class="QPushButton" name="pushButton_apply">
        <property name="text">
-        <string>&amp;Save</string>
+        <string>&amp;Apply</string>
        </property>
       </widget>
      </item>

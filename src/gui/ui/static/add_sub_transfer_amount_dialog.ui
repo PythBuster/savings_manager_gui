@@ -67,7 +67,7 @@
       <item>
        <widget class="QComboBox" name="comboBox_moneyboxes">
         <property name="styleSheet">
-         <string notr="true">text-align: right;</string>
+         <string notr="true">text-align: right; border: 1px solid black;</string>
         </property>
        </widget>
       </item>
@@ -100,6 +100,9 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid black;</string>
+       </property>
        <property name="inputMethodHints">
         <set>Qt::InputMethodHint::ImhPreferNumbers</set>
        </property>
@@ -123,7 +126,11 @@
       <number>0</number>
      </property>
      <item>
-      <widget class="QLineEdit" name="lineEdit_description"/>
+      <widget class="QLineEdit" name="lineEdit_description">
+       <property name="styleSheet">
+        <string notr="true">border: 1px solid black;</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>
