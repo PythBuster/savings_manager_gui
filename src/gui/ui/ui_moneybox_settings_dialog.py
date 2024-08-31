@@ -76,6 +76,7 @@ class Ui_MoneyboxSettingsDialog(object):
 
         self.frame_overflow_moneybox_settings = QFrame(MoneyboxSettingsDialog)
         self.frame_overflow_moneybox_settings.setObjectName(u"frame_overflow_moneybox_settings")
+        self.frame_overflow_moneybox_settings.setEnabled(False)
         self.frame_overflow_moneybox_settings.setStyleSheet(u"border: 0px;")
         self.frame_overflow_moneybox_settings.setFrameShape(QFrame.Shape.StyledPanel)
         self.frame_overflow_moneybox_settings.setFrameShadow(QFrame.Shadow.Raised)
