@@ -7,9 +7,10 @@ from PySide6.QtWidgets import QWidget, QDialog, QMessageBox, QStyledItemDelegate
 from qasync import asyncSlot
 
 from savings_manager_cli.api_consumers import PostMoneyboxBalanceAddApiConsumer, PostMoneyboxBalanceSubApiConsumer, \
-    GetMoneyboxesApiConsumer, PostMoneyboxBalanceTransferApiConsumer
+    GetMoneyboxesApiConsumer, PostMoneyboxBalanceTransferApiConsumer, PatchMoneyboxApiConsumer
 
 from src.gui.add_sub_transfer_dialog import AddSubDialog
+from src.gui.moneybox_settings_dialog import MoneyboxSettingsDialog
 from src.gui.ui.ui_moneybox_overview_widget import Ui_MoneyboxOverviewWidget
 
 
@@ -54,6 +55,9 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         self.pushButton_transfer_amount.clicked.connect(
             lambda: asyncio.ensure_future(self.on_transfer_amount_clicked())
         )
+        self.pushButton_settings.clicked.connect(
+            lambda: asyncio.ensure_future(self.on_edit_settings_clicked())
+        )
 
         self.adjustSize()
 
@@ -64,6 +68,80 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         self.label_savings_amount.setText(data["savings_amount_label"])
         self.label_savings_target.setText(data["savings_target_label"])
         self.label_priority.setText(data["priority_label"])
+
+    @asyncSlot()
+    async def on_edit_settings_clicked(self):
+        if self.label_savings_target.text() == "No Limit":
+            savings_target_label = ""
+        else:
+            savings_target_label = self.label_savings_target.text().replace("€", "").strip()
+
+        dialog = MoneyboxSettingsDialog(
+            name_label=self.label_name.text(),
+            savings_amount_label=self.label_savings_amount.text().replace("€","").strip(),
+            savings_target_label=savings_target_label,
+        )
+        dialog.setWindowTitle("Edit settings...")
+
+        result = dialog.exec()
+
+        if result == QDialog.Accepted:
+            name = dialog.lineEdit_name.text()
+            savings_amount = int(dialog.lineEdit_savings_amount.text().replace(",", "").replace(".", ""))
+            savings_target = dialog.lineEdit_savings_target.text().replace(",", "").replace(".", "")
+
+            if savings_target:
+                consumer = PatchMoneyboxApiConsumer(
+                    moneybox_id=self.moneybox_id,
+                    name=name,
+                    savings_amount=savings_amount,
+                    savings_target=int(savings_target),
+                    clear_savings_target=False,
+                )
+            else:
+                consumer = PatchMoneyboxApiConsumer(
+                    moneybox_id=self.moneybox_id,
+                    name=name,
+                    savings_amount=savings_amount,
+                    savings_target=-1,  # -1 means unset
+                    clear_savings_target=True,
+                )
+
+            async with consumer:
+                if consumer.response.status_code == 200:
+                    QMessageBox.information(
+                        self,
+                        "Updated settings",
+                        "Updated settings successfully!",
+                    )
+
+                    data = consumer.response.json()
+                    self.update_data(
+                        {
+                            "moneybox_id": self.moneybox_id,
+                            "name_label": data["name"],
+                            "priority_label": str(data["priority"]),
+                            "savings_amount_label": (
+                                f"{data['savings_amount'] / 100:.2f} €".replace(".", ",")
+                            ),
+                            "savings_target_label": (
+                                "No Limit"
+                                if data["savings_target"] is None
+                                else f"{data['savings_target'] / 100:.2f} €".replace(".", ",")
+                            ),
+                            "balance_label": (
+                                f"{data['balance'] / 100:.2f} €".replace(".", ",")
+                            ),
+                        }
+                    )
+                else:
+                    message_str = consumer.response.content.decode(encoding="utf-8")
+                    message = json.loads(message_str)["message"]
+                    QMessageBox.warning(
+                        self,
+                        "Add failed",
+                        f"{message} (Amounts are expressed in cents.)",
+                    )
 
     @asyncSlot()
     async def on_add_amount_clicked(self):

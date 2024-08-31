@@ -23,7 +23,7 @@ class Ui_MoneyboxOverviewWidget(object):
     def setupUi(self, MoneyboxOverviewWidget):
         if not MoneyboxOverviewWidget.objectName():
             MoneyboxOverviewWidget.setObjectName(u"MoneyboxOverviewWidget")
-        MoneyboxOverviewWidget.resize(613, 423)
+        MoneyboxOverviewWidget.resize(669, 303)
         self.horizontalLayout = QHBoxLayout(MoneyboxOverviewWidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalSpacer = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -71,6 +71,17 @@ class Ui_MoneyboxOverviewWidget(object):
         self.formLayout = QFormLayout()
         self.formLayout.setObjectName(u"formLayout")
         self.formLayout.setContentsMargins(-1, -1, -1, 0)
+        self.label_3 = QLabel(MoneyboxOverviewWidget)
+        self.label_3.setObjectName(u"label_3")
+
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_3)
+
+        self.label_id = QLabel(MoneyboxOverviewWidget)
+        self.label_id.setObjectName(u"label_id")
+        self.label_id.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.label_id)
+
         self.label_5 = QLabel(MoneyboxOverviewWidget)
         self.label_5.setObjectName(u"label_5")
 
@@ -85,24 +96,24 @@ class Ui_MoneyboxOverviewWidget(object):
         self.label_7 = QLabel(MoneyboxOverviewWidget)
         self.label_7.setObjectName(u"label_7")
 
-        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_7)
+        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_7)
 
         self.label_savings_target = QLabel(MoneyboxOverviewWidget)
         self.label_savings_target.setObjectName(u"label_savings_target")
         self.label_savings_target.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.label_savings_target)
+        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.label_savings_target)
 
         self.label_9 = QLabel(MoneyboxOverviewWidget)
         self.label_9.setObjectName(u"label_9")
 
-        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.label_9)
+        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_9)
 
         self.label_savings_amount = QLabel(MoneyboxOverviewWidget)
         self.label_savings_amount.setObjectName(u"label_savings_amount")
         self.label_savings_amount.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
-        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.label_savings_amount)
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.label_savings_amount)
 
         self.label_2 = QLabel(MoneyboxOverviewWidget)
         self.label_2.setObjectName(u"label_2")
@@ -114,17 +125,6 @@ class Ui_MoneyboxOverviewWidget(object):
         self.label_priority.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
         self.formLayout.setWidget(4, QFormLayout.FieldRole, self.label_priority)
-
-        self.label_3 = QLabel(MoneyboxOverviewWidget)
-        self.label_3.setObjectName(u"label_3")
-
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label_3)
-
-        self.label_id = QLabel(MoneyboxOverviewWidget)
-        self.label_id.setObjectName(u"label_id")
-        self.label_id.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.label_id)
 
 
         self.horizontalLayout_4.addLayout(self.formLayout)
@@ -203,13 +203,15 @@ class Ui_MoneyboxOverviewWidget(object):
 
         self.retranslateUi(MoneyboxOverviewWidget)
 
-        #QMetaObject.connectSlotsByName(MoneyboxOverviewWidget)
+        QMetaObject.connectSlotsByName(MoneyboxOverviewWidget)
     # setupUi
 
     def retranslateUi(self, MoneyboxOverviewWidget):
         MoneyboxOverviewWidget.setWindowTitle(QCoreApplication.translate("MoneyboxOverviewWidget", u"Form", None))
         self.label.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Moneybox:", None))
         self.label_name.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Overflow Moneybox", None))
+        self.label_3.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"ID:", None))
+        self.label_id.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"1", None))
         self.label_5.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Balance:", None))
         self.label_balance.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"123,45 \u20ac", None))
         self.label_7.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Savings Target:", None))
@@ -218,8 +220,6 @@ class Ui_MoneyboxOverviewWidget(object):
         self.label_savings_amount.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"150,00 \u20ac", None))
         self.label_2.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Priority:", None))
         self.label_priority.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"1", None))
-        self.label_3.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"ID:", None))
-        self.label_id.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"1", None))
         self.pushButton_sub_amount.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"&Sub Amount", None))
         self.pushButton_delete_moneybox.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"&Delete Moneybox", None))
         self.pushButton_settings.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Edit &Settings", None))

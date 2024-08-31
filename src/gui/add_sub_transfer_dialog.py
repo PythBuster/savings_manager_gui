@@ -66,4 +66,3 @@ class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
             self.pushButton_apply.setEnabled(amount > 0)
         except:
             self.pushButton_apply.setEnabled(False)
-

@@ -15,8 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QHBoxLayout, QPushButton,
-    QSizePolicy, QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QDialog, QFormLayout, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_MoneyboxSettingsDialog(object):
     def setupUi(self, MoneyboxSettingsDialog):
@@ -25,6 +26,42 @@ class Ui_MoneyboxSettingsDialog(object):
         MoneyboxSettingsDialog.resize(400, 300)
         self.verticalLayout = QVBoxLayout(MoneyboxSettingsDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
+        self.formLayout = QFormLayout()
+        self.formLayout.setObjectName(u"formLayout")
+        self.formLayout.setContentsMargins(-1, -1, -1, 0)
+        self.label = QLabel(MoneyboxSettingsDialog)
+        self.label.setObjectName(u"label")
+
+        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.label)
+
+        self.lineEdit_name = QLineEdit(MoneyboxSettingsDialog)
+        self.lineEdit_name.setObjectName(u"lineEdit_name")
+
+        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.lineEdit_name)
+
+        self.label_2 = QLabel(MoneyboxSettingsDialog)
+        self.label_2.setObjectName(u"label_2")
+
+        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.label_2)
+
+        self.label_3 = QLabel(MoneyboxSettingsDialog)
+        self.label_3.setObjectName(u"label_3")
+
+        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.label_3)
+
+        self.lineEdit_savings_amount = QLineEdit(MoneyboxSettingsDialog)
+        self.lineEdit_savings_amount.setObjectName(u"lineEdit_savings_amount")
+
+        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.lineEdit_savings_amount)
+
+        self.lineEdit_savings_target = QLineEdit(MoneyboxSettingsDialog)
+        self.lineEdit_savings_target.setObjectName(u"lineEdit_savings_target")
+
+        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.lineEdit_savings_target)
+
+
+        self.verticalLayout.addLayout(self.formLayout)
+
         self.verticalSpacer = QSpacerItem(0, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -52,11 +89,14 @@ class Ui_MoneyboxSettingsDialog(object):
 
         self.retranslateUi(MoneyboxSettingsDialog)
 
-        #QMetaObject.connectSlotsByName(MoneyboxSettingsDialog)
+        QMetaObject.connectSlotsByName(MoneyboxSettingsDialog)
     # setupUi
 
     def retranslateUi(self, MoneyboxSettingsDialog):
         MoneyboxSettingsDialog.setWindowTitle(QCoreApplication.translate("MoneyboxSettingsDialog", u"Dialog", None))
+        self.label.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"Name: ", None))
+        self.label_2.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"Savings Amount: ", None))
+        self.label_3.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"Savings Target: ", None))
         self.pushButton_apply.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"&Apply", None))
         self.pushButton_cancel.setText(QCoreApplication.translate("MoneyboxSettingsDialog", u"&Cancel", None))
     # retranslateUi
