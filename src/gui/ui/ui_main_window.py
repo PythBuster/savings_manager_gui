@@ -52,9 +52,15 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_navigation.addWidget(self.pushButton_AppSettingsWidget)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.verticalSpacer = QSpacerItem(0, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.MinimumExpanding)
 
         self.verticalLayout_navigation.addItem(self.verticalSpacer)
+
+        self.verticalLayout_app_data_overview = QVBoxLayout()
+        self.verticalLayout_app_data_overview.setSpacing(6)
+        self.verticalLayout_app_data_overview.setObjectName(u"verticalLayout_app_data_overview")
+
+        self.verticalLayout_navigation.addLayout(self.verticalLayout_app_data_overview)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout_navigation)
@@ -84,7 +90,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.action_Exit.triggered.connect(MainWindow.close)
 
-        #QMetaObject.connectSlotsByName(MainWindow)
+        QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):

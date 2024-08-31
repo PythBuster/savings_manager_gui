@@ -43,13 +43,23 @@
         <property name="orientation">
          <enum>Qt::Orientation::Vertical</enum>
         </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+        </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>20</width>
+          <width>0</width>
           <height>40</height>
          </size>
         </property>
        </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_app_data_overview">
+        <property name="spacing">
+         <number>6</number>
+        </property>
+       </layout>
       </item>
      </layout>
     </item>

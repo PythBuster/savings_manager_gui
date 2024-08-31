@@ -47,6 +47,19 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         self.label_savings_target.setText(savings_target_label)
         self.label_priority.setText(priority_label)
 
+        if priority_label == "0":  # is overflow moneybox
+            self.label_priority_title.setVisible(False)
+            self.label_priority.setVisible(False)
+
+            self.label_savings_target_title.setVisible(False)
+            self.label_savings_target.setVisible(False)
+
+            self.label_savings_amount_title.setVisible(False)
+            self.label_savings_amount.setVisible(False)
+
+            self.pushButton_settings.setVisible(False)
+            self.pushButton_delete_moneybox.setVisible(False)
+
         # connections
         self.pushButton_add_amount.clicked.connect(
             lambda: asyncio.ensure_future(self.on_add_amount_clicked())
