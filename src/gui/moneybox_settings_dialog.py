@@ -54,20 +54,20 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
 
         # digits only
         if text.count(",") > 1 or text == ",":
+            # reset text to previous valid one
             self.lineEdit_savings_amount.blockSignals(True)
             self.lineEdit_savings_amount.setText(self._previous_lineEdit_savings_amount_text)
             self.lineEdit_savings_amount.blockSignals(False)
-            self._is_target_valid = False
             return
 
         for ch in text:
             if ch.isdigit() or ch == ",":
                 continue
             else:
+                # reset text to previous valid one
                 self.lineEdit_savings_amount.blockSignals(True)
                 self.lineEdit_savings_amount.setText(self._previous_lineEdit_savings_amount_text)
                 self.lineEdit_savings_amount.blockSignals(False)
-                self._is_target_valid = False
                 return
 
         if not text:
@@ -88,32 +88,34 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
         try:
             amount_str = text.replace(",", "").replace(".", "")
             valid = bool(amount_str)
+
+            if valid:
+                self._previous_lineEdit_savings_target_text = cleaned_text
         except ValueError:
             valid = False
 
         self._is_amount_valid = valid
         self.update_apply_button()
-        self._previous_lineEdit_savings_amount_text = text
 
     def validate_target(self):
         text = self.lineEdit_savings_target.text().strip()
 
         # digits only
         if text.count(",") > 1 or text == ",":
+            # reset text to previous valid one
             self.lineEdit_savings_target.blockSignals(True)
             self.lineEdit_savings_target.setText(self._previous_lineEdit_savings_target_text)
             self.lineEdit_savings_target.blockSignals(False)
-            self._is_target_valid = False
             return
 
         for ch in text:
             if ch.isdigit() or ch == ",":
                 continue
             else:
+                # reset text to previous valid one
                 self.lineEdit_savings_target.blockSignals(True)
                 self.lineEdit_savings_target.setText(self._previous_lineEdit_savings_target_text)
                 self.lineEdit_savings_target.blockSignals(False)
-                self._is_target_valid = False
                 return
 
         _prev = self._previous_lineEdit_savings_target_text.replace(",", "").replace(".", "").lstrip('0')

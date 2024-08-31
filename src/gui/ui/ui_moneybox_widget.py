@@ -25,10 +25,10 @@ class Ui_MoneyBoxWidget(object):
             MoneyBoxWidget.setObjectName(u"MoneyBoxWidget")
         MoneyBoxWidget.resize(200, 197)
         MoneyBoxWidget.setStyleSheet(u"QFrame#frame_2{\n"
-" background-color: #ddd;\n"
+" background-color: #white;\n"
 "}\n"
 "QFrame#frame_2:hover{\n"
-" background-color: white;\n"
+" background-color: #ddd;\n"
 "}")
         self.verticalLayout_2 = QVBoxLayout(MoneyBoxWidget)
         self.verticalLayout_2.setSpacing(0)
@@ -202,7 +202,7 @@ class Ui_MoneyBoxWidget(object):
 
         self.retranslateUi(MoneyBoxWidget)
 
-        #QMetaObject.connectSlotsByName(MoneyBoxWidget)
+        QMetaObject.connectSlotsByName(MoneyBoxWidget)
     # setupUi
 
     def retranslateUi(self, MoneyBoxWidget):

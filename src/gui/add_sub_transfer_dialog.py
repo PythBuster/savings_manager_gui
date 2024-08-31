@@ -35,34 +35,64 @@ class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
         delegate = RightAlignedDelegate(self.comboBox_moneyboxes)
         self.comboBox_moneyboxes.setItemDelegate(delegate)
 
+        self._previous_lineEdit_amount_text = self.lineEdit_amount.text()
         # connections
-        self.lineEdit_amount.textChanged.connect(self.validate_input)
+        self.lineEdit_amount.textChanged.connect(self.validate_amount)
 
-    def validate_input(self):
-        # Get the current text from the QLineEdit
-        text = self.lineEdit_amount.text()
+    def validate_amount(self):
+        text = self.lineEdit_amount.text().strip()
 
-        # Remove any commas or leading zeros for processing
-        cleaned_text = text.replace(",", "").lstrip('0')
+        # digits only
+        if text.count(",") > 1 or text == ",":
+            # reset text to previous valid one
+            self.lineEdit_amount.blockSignals(True)
+            self.lineEdit_amount.setText(self._previous_lineEdit_amount_text)
+            self.lineEdit_amount.blockSignals(False)
 
-        if len(cleaned_text) == 0:
-            cleaned_text = "0"  # Set to "0" if the input is empty after cleaning
+            if not self._previous_lineEdit_amount_text:
+                self._is_amount_valid = False
+                self.pushButton_apply.setEnabled(self._is_amount_valid)
 
-        # Add leading zeros if necessary to ensure at least 3 digits
-        while len(cleaned_text) < 3:
-            cleaned_text = '0' + cleaned_text
+            return
 
-        # Insert the comma before the last two digits
-        formatted_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
+        for ch in text:
+            if ch.isdigit() or ch == ",":
+                continue
+            else:
+                # reset text to previous valid one
+                self.lineEdit_amount.blockSignals(True)
+                self.lineEdit_amount.setText(self._previous_lineEdit_amount_text)
+                self.lineEdit_amount.blockSignals(False)
 
-        # Update the QLineEdit text without emitting another textChanged signal
+                if not self._previous_lineEdit_amount_text:
+                    self._is_amount_valid = False
+                    self.pushButton_apply.setEnabled(self._is_amount_valid)
+
+                return
+
+        if not text:
+            cleaned_text = "0,00"
+        else:
+            cleaned_text = text.replace(",", "").replace(".", "").lstrip('0') or "0"
+            # Formatierung der Eingabe
+            while len(cleaned_text) < 3:
+                cleaned_text = '0' + cleaned_text
+            cleaned_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
+
+        # Setze den Text ohne die TextChanged-Signal erneut auszulösen
         self.lineEdit_amount.blockSignals(True)
-        self.lineEdit_amount.setText(formatted_text)
+        self.lineEdit_amount.setText(cleaned_text)
         self.lineEdit_amount.blockSignals(False)
 
+        # Überprüfe, ob der Betrag gültig ist
         try:
-            # Enable the Apply button only if the amount is greater than 0,00 (0 cents)
-            amount = int(cleaned_text.replace(",", "").replace(".", ""))
-            self.pushButton_apply.setEnabled(amount > 0)
-        except:
-            self.pushButton_apply.setEnabled(False)
+            amount_str = text.replace(",", "").replace(".", "")
+            valid = bool(amount_str)
+
+            if valid:
+                self._previous_lineEdit_amount_text = cleaned_text
+        except ValueError:
+            valid = False
+
+        self._is_amount_valid = valid
+        self.pushButton_apply.setEnabled(self._is_amount_valid)

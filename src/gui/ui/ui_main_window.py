@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 426)
+        MainWindow.resize(824, 488)
         self.actionAbout_Qt = QAction(MainWindow)
         self.actionAbout_Qt.setObjectName(u"actionAbout_Qt")
         self.actionAbout_Savings_Manager_GUI = QAction(MainWindow)
@@ -68,7 +68,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 800, 22))
+        self.menubar.setGeometry(QRect(0, 0, 824, 22))
         self.menu_Help = QMenu(self.menubar)
         self.menu_Help.setObjectName(u"menu_Help")
         self.menu_File = QMenu(self.menubar)
@@ -84,7 +84,7 @@ class Ui_MainWindow(object):
         self.retranslateUi(MainWindow)
         self.action_Exit.triggered.connect(MainWindow.close)
 
-        #QMetaObject.connectSlotsByName(MainWindow)
+        QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):

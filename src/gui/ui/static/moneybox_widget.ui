@@ -15,10 +15,10 @@
   </property>
   <property name="styleSheet">
    <string notr="true">QFrame#frame_2{
- background-color: #ddd;
+ background-color: #white;
 }
 QFrame#frame_2:hover{
- background-color: white;
+ background-color: #ddd;
 }</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">

@@ -15,15 +15,16 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFormLayout, QFrame, QGridLayout,
-    QHBoxLayout, QLabel, QPushButton, QSizePolicy,
-    QSpacerItem, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QAbstractScrollArea, QApplication, QFormLayout,
+    QFrame, QGridLayout, QHBoxLayout, QHeaderView,
+    QLabel, QPushButton, QSizePolicy, QSpacerItem,
+    QTableWidget, QTableWidgetItem, QVBoxLayout, QWidget)
 
 class Ui_MoneyboxOverviewWidget(object):
     def setupUi(self, MoneyboxOverviewWidget):
         if not MoneyboxOverviewWidget.objectName():
             MoneyboxOverviewWidget.setObjectName(u"MoneyboxOverviewWidget")
-        MoneyboxOverviewWidget.resize(669, 303)
+        MoneyboxOverviewWidget.resize(716, 417)
         self.horizontalLayout = QHBoxLayout(MoneyboxOverviewWidget)
         self.horizontalLayout.setObjectName(u"horizontalLayout")
         self.horizontalSpacer = QSpacerItem(0, 0, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
@@ -55,6 +56,11 @@ class Ui_MoneyboxOverviewWidget(object):
         self.horizontalSpacer_3 = QSpacerItem(0, 0, QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Minimum)
 
         self.horizontalLayout_2.addItem(self.horizontalSpacer_3)
+
+        self.pushButton_all_transaction_logs = QPushButton(MoneyboxOverviewWidget)
+        self.pushButton_all_transaction_logs.setObjectName(u"pushButton_all_transaction_logs")
+
+        self.horizontalLayout_2.addWidget(self.pushButton_all_transaction_logs)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
@@ -188,10 +194,47 @@ class Ui_MoneyboxOverviewWidget(object):
 
         self.verticalLayout.addWidget(self.line)
 
-        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+        self.label_4 = QLabel(MoneyboxOverviewWidget)
+        self.label_4.setObjectName(u"label_4")
+        self.label_4.setFont(font1)
 
-        self.verticalLayout.addItem(self.verticalSpacer)
+        self.verticalLayout.addWidget(self.label_4)
 
+        self.tableWidget_transaction_logs = QTableWidget(MoneyboxOverviewWidget)
+        if (self.tableWidget_transaction_logs.columnCount() < 7):
+            self.tableWidget_transaction_logs.setColumnCount(7)
+        font3 = QFont()
+        font3.setPointSize(11)
+        __qtablewidgetitem = QTableWidgetItem()
+        __qtablewidgetitem.setFont(font3);
+        self.tableWidget_transaction_logs.setHorizontalHeaderItem(0, __qtablewidgetitem)
+        __qtablewidgetitem1 = QTableWidgetItem()
+        __qtablewidgetitem1.setFont(font3);
+        self.tableWidget_transaction_logs.setHorizontalHeaderItem(1, __qtablewidgetitem1)
+        __qtablewidgetitem2 = QTableWidgetItem()
+        __qtablewidgetitem2.setFont(font3);
+        self.tableWidget_transaction_logs.setHorizontalHeaderItem(2, __qtablewidgetitem2)
+        __qtablewidgetitem3 = QTableWidgetItem()
+        __qtablewidgetitem3.setFont(font3);
+        self.tableWidget_transaction_logs.setHorizontalHeaderItem(3, __qtablewidgetitem3)
+        __qtablewidgetitem4 = QTableWidgetItem()
+        __qtablewidgetitem4.setFont(font3);
+        self.tableWidget_transaction_logs.setHorizontalHeaderItem(4, __qtablewidgetitem4)
+        __qtablewidgetitem5 = QTableWidgetItem()
+        __qtablewidgetitem5.setFont(font3);
+        self.tableWidget_transaction_logs.setHorizontalHeaderItem(5, __qtablewidgetitem5)
+        __qtablewidgetitem6 = QTableWidgetItem()
+        __qtablewidgetitem6.setFont(font3);
+        self.tableWidget_transaction_logs.setHorizontalHeaderItem(6, __qtablewidgetitem6)
+        self.tableWidget_transaction_logs.setObjectName(u"tableWidget_transaction_logs")
+        self.tableWidget_transaction_logs.setFrameShape(QFrame.Shape.StyledPanel)
+        self.tableWidget_transaction_logs.setSizeAdjustPolicy(QAbstractScrollArea.SizeAdjustPolicy.AdjustIgnored)
+        self.tableWidget_transaction_logs.setSelectionMode(QAbstractItemView.SelectionMode.SingleSelection)
+        self.tableWidget_transaction_logs.setSortingEnabled(False)
+
+        self.verticalLayout.addWidget(self.tableWidget_transaction_logs)
+
+        self.verticalLayout.setStretch(5, 1)
 
         self.horizontalLayout.addLayout(self.verticalLayout)
 
@@ -203,13 +246,14 @@ class Ui_MoneyboxOverviewWidget(object):
 
         self.retranslateUi(MoneyboxOverviewWidget)
 
-        #QMetaObject.connectSlotsByName(MoneyboxOverviewWidget)
+        QMetaObject.connectSlotsByName(MoneyboxOverviewWidget)
     # setupUi
 
     def retranslateUi(self, MoneyboxOverviewWidget):
         MoneyboxOverviewWidget.setWindowTitle(QCoreApplication.translate("MoneyboxOverviewWidget", u"Form", None))
         self.label.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Moneybox:", None))
         self.label_name.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Overflow Moneybox", None))
+        self.pushButton_all_transaction_logs.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Show all transaction logs", None))
         self.label_3.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"ID:", None))
         self.label_id.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"1", None))
         self.label_5.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Balance:", None))
@@ -225,5 +269,20 @@ class Ui_MoneyboxOverviewWidget(object):
         self.pushButton_settings.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Edit &Settings", None))
         self.pushButton_add_amount.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"&Add Amount", None))
         self.pushButton_transfer_amount.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"&Transfer Amount", None))
+        self.label_4.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"Last Transactions", None))
+        ___qtablewidgetitem = self.tableWidget_transaction_logs.horizontalHeaderItem(0)
+        ___qtablewidgetitem.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"date", None));
+        ___qtablewidgetitem1 = self.tableWidget_transaction_logs.horizontalHeaderItem(1)
+        ___qtablewidgetitem1.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"trigger", None));
+        ___qtablewidgetitem2 = self.tableWidget_transaction_logs.horizontalHeaderItem(2)
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"type", None));
+        ___qtablewidgetitem3 = self.tableWidget_transaction_logs.horizontalHeaderItem(3)
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"counterparty", None));
+        ___qtablewidgetitem4 = self.tableWidget_transaction_logs.horizontalHeaderItem(4)
+        ___qtablewidgetitem4.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"amount", None));
+        ___qtablewidgetitem5 = self.tableWidget_transaction_logs.horizontalHeaderItem(5)
+        ___qtablewidgetitem5.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"balance", None));
+        ___qtablewidgetitem6 = self.tableWidget_transaction_logs.horizontalHeaderItem(6)
+        ___qtablewidgetitem6.setText(QCoreApplication.translate("MoneyboxOverviewWidget", u"description", None));
     # retranslateUi
 
