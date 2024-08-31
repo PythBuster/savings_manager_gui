@@ -1,9 +1,8 @@
 import asyncio
 import json
 
-from PySide6.QtCore import QSettings, QByteArray
-from PySide6.QtWidgets import (QDialog, QMainWindow, QMessageBox,
-                               QWidget)
+from PySide6.QtCore import QSettings
+from PySide6.QtWidgets import QDialog, QMainWindow, QMessageBox, QWidget
 from qasync import asyncClose, asyncSlot
 from savings_manager_cli import api_consumers
 from savings_manager_cli.api_consumers import (GetAppSettingsApiConsumer,
@@ -58,6 +57,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             host_label=api_consumers.BASE_URL,
             port_label=str(api_consumers.PORT),
         )
+        server_settings_dialog.setWindowTitle("Backend server settings...")
 
         result = server_settings_dialog.exec()
 
@@ -75,6 +75,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 "Updated server settings.",
                 "Updated server settings successfully.",
             )
+
+            await self.load_moneyboxes_overview_widget()
 
     @asyncSlot()
     async def on_enter_moneybox(self, moneybox_id: int):
@@ -182,6 +184,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                                 "Update AppSettings failed",
                                 message,
                             )
+
+                await self.load_moneyboxes_overview_widget()
             else:
                 message_str = consumer.response.content.decode(encoding="utf-8")
                 message = json.loads(message_str)["message"]

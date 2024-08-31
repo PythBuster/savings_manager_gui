@@ -30,6 +30,13 @@ class MoneyboxWidget(QWidget, Ui_MoneyBoxWidget):
         self.label_target_amount.setText(savings_target_label)
         self.label_balance.setText(balance_label)
 
+        if priority_label == "0":  # is overflow moneybox
+            self.label_priority.setVisible(False)
+            self.label_savings_amount.setVisible(False)
+            self.label_target_amount.setVisible(False)
+            self.label_target_title.setVisible(False)
+            self.label_savings_amount_prefix.setVisible(False)
+
         self.adjustSize()
 
     def mousePressEvent(self, event: QMouseEvent):

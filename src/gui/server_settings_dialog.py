@@ -72,9 +72,6 @@ class ServerSettingsDialog(QDialog, Ui_ServerSettingsDialog):
         self._is_port_valid = True
         self.update_apply_button()
 
-
     def update_apply_button(self):
         # Aktualisiere den Zustand des Apply-Buttons
-        self.pushButton_apply.setEnabled(
-            self._is_host_valid and self._is_port_valid
-        )
+        self.pushButton_apply.setEnabled(self._is_host_valid and self._is_port_valid)

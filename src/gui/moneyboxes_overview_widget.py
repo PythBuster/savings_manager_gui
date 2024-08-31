@@ -4,9 +4,11 @@ import json
 from PySide6.QtWidgets import (QDialog, QMainWindow, QMessageBox, QPushButton,
                                QWidget)
 from qasync import asyncSlot
-from savings_manager_cli.api_consumers import (GetMoneyboxesApiConsumer,
+from savings_manager_cli.api_consumers import (GetAppSettingsApiConsumer,
+                                               GetMoneyboxesApiConsumer,
                                                PostMoneyboxApiConsumer)
 
+from src.gui.app_data_overview_widget import AppDataOverviewWidget
 from src.gui.moneybox_settings_dialog import MoneyboxSettingsDialog
 from src.gui.moneybox_widget import MoneyboxWidget
 from src.gui.ui.ui_moneyboxes_overview_widget import \
@@ -19,9 +21,63 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
         parent_window: QMainWindow = None,
         parent: QWidget | None = None,
     ):
+        self.moneyboxes = None
         self.parent_window = parent_window
         super().__init__(parent)
         self.setupUi(self)
+
+    async def _refresh_app_data_overview_widget(self):
+        while self.verticalLayout_app_data_overview.count() > 0:
+            item = self.verticalLayout_app_data_overview.takeAt(0)
+            widget = item.widget()
+
+            if widget is not None:
+                widget.deleteLater()
+
+        async with GetAppSettingsApiConsumer() as consumer:
+            if consumer.response.status_code == 200:
+                app_settings = consumer.response.json()
+            else:
+                message_str = consumer.response.content.decode(encoding="utf-8")
+                message = json.loads(message_str)["message"]
+                QMessageBox.warning(
+                    self,
+                    "Loading app settings failed",
+                    message,
+                )
+                return
+
+        # TODO collect data
+        savings_amount_label = f"{app_settings['savings_amount'] / 100:.2f} €".replace(
+            ".", ","
+        )
+        enabled_automated_savings = app_settings["is_automated_saving_active"]
+        allocated_savings = sum(
+            moneybox["savings_amount"] for moneybox in self.moneyboxes
+        )
+        allocated_savings_label = f"{allocated_savings / 100:.2f} €".replace(".", ",")
+
+        not_allocated_savings = (
+            diff
+            if (diff := app_settings["savings_amount"] - allocated_savings) >= 0
+            else 0
+        )
+        not_allocated_savings_label = f"{not_allocated_savings / 100:.2f} €".replace(
+            ".", ","
+        )
+
+        total_balance = sum(moneybox["balance"] for moneybox in self.moneyboxes)
+        total_balance_label = f"{total_balance/ 100:.2f} €".replace(".", ",")
+
+        self.verticalLayout_app_data_overview.addWidget(
+            AppDataOverviewWidget(
+                savings_amount_label=savings_amount_label,
+                enabled_automated_savings=enabled_automated_savings,
+                allocated_savings_label=allocated_savings_label,
+                not_allocated_savings_label=not_allocated_savings_label,
+                total_balance_label=total_balance_label,
+            )
+        )
 
     async def load_api_content(self):
         """Load API Consumer specific content"""
@@ -42,6 +98,8 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
             priority_sorted_moneyboxes = sorted(
                 moneyboxes, key=lambda moneybox: moneybox["priority"]
             )
+
+            self.moneyboxes = priority_sorted_moneyboxes
 
             max_col_index = 0
             row_index = 0
@@ -139,7 +197,7 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
                 balance_label=f"{priority_sorted_moneyboxes[0]['balance'] / 100:.2f} €".replace(
                     ".", ","
                 ),
-                priority_label="",
+                priority_label=str(priority_sorted_moneyboxes[0]["priority"]),
             )
             moneybox_widget.enter_moneybox.connect(self.parent_window.on_enter_moneybox)
 
@@ -150,6 +208,8 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
                 1,
                 col_span,
             )
+
+        await self._refresh_app_data_overview_widget()
 
     @asyncSlot()
     async def on_new_moneybox_clicked(self):

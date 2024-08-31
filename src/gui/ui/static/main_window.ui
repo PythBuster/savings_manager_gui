@@ -54,13 +54,6 @@
         </property>
        </spacer>
       </item>
-      <item>
-       <layout class="QVBoxLayout" name="verticalLayout_app_data_overview">
-        <property name="spacing">
-         <number>6</number>
-        </property>
-       </layout>
-      </item>
      </layout>
     </item>
     <item>
