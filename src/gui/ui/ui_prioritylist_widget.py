@@ -15,15 +15,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHBoxLayout, QLabel, QListWidget,
-    QListWidgetItem, QPushButton, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QAbstractItemView, QApplication, QHBoxLayout, QLabel,
+    QListWidget, QListWidgetItem, QPushButton, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_PriorityListWidget(object):
     def setupUi(self, PriorityListWidget):
         if not PriorityListWidget.objectName():
             PriorityListWidget.setObjectName(u"PriorityListWidget")
-        PriorityListWidget.resize(456, 379)
+        PriorityListWidget.resize(428, 507)
         self.verticalLayout_2 = QVBoxLayout(PriorityListWidget)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.verticalLayout = QVBoxLayout()
@@ -41,10 +41,14 @@ class Ui_PriorityListWidget(object):
 
         self.verticalLayout_4.addWidget(self.label)
 
-        self.listWidget = QListWidget(PriorityListWidget)
-        self.listWidget.setObjectName(u"listWidget")
+        self.listWidget_prioritylist = QListWidget(PriorityListWidget)
+        self.listWidget_prioritylist.setObjectName(u"listWidget_prioritylist")
+        font1 = QFont()
+        font1.setPointSize(12)
+        self.listWidget_prioritylist.setFont(font1)
+        self.listWidget_prioritylist.setEditTriggers(QAbstractItemView.EditTrigger.NoEditTriggers)
 
-        self.verticalLayout_4.addWidget(self.listWidget)
+        self.verticalLayout_4.addWidget(self.listWidget_prioritylist)
 
         self.horizontalLayout_4 = QHBoxLayout()
         self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
@@ -87,20 +91,6 @@ class Ui_PriorityListWidget(object):
 
         self.verticalLayout_2.addLayout(self.verticalLayout)
 
-        self.horizontalLayout = QHBoxLayout()
-        self.horizontalLayout.setObjectName(u"horizontalLayout")
-        self.horizontalSpacer = QSpacerItem(0, 0, QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Minimum)
-
-        self.horizontalLayout.addItem(self.horizontalSpacer)
-
-        self.pushButton = QPushButton(PriorityListWidget)
-        self.pushButton.setObjectName(u"pushButton")
-
-        self.horizontalLayout.addWidget(self.pushButton)
-
-
-        self.verticalLayout_2.addLayout(self.horizontalLayout)
-
         self.verticalLayout_2.setStretch(0, 1)
 
         self.retranslateUi(PriorityListWidget)
@@ -113,6 +103,5 @@ class Ui_PriorityListWidget(object):
         self.label.setText(QCoreApplication.translate("PriorityListWidget", u"Prioritylist", None))
         self.pushButton_selected_up.setText(QCoreApplication.translate("PriorityListWidget", u"\u25b2", None))
         self.pushButton_selected_down.setText(QCoreApplication.translate("PriorityListWidget", u"\u25bc", None))
-        self.pushButton.setText(QCoreApplication.translate("PriorityListWidget", u"&Save", None))
     # retranslateUi
 

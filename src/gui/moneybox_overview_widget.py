@@ -57,9 +57,14 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
             self.label_savings_amount_title.setVisible(False)
             self.label_savings_amount.setVisible(False)
 
-            self.pushButton_settings.setVisible(False)
             self.pushButton_delete_moneybox.setVisible(False)
-
+            self.pushButton_settings.setVisible(False)
+        else:
+            self.pushButton_settings.clicked.connect(
+                lambda: asyncio.ensure_future(self.on_edit_settings_clicked(
+                    is_overflow_moneybox=False,
+                ))
+            )
         # connections
         self.pushButton_add_amount.clicked.connect(
             lambda: asyncio.ensure_future(self.on_add_amount_clicked())
@@ -70,9 +75,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
         self.pushButton_transfer_amount.clicked.connect(
             lambda: asyncio.ensure_future(self.on_transfer_amount_clicked())
         )
-        self.pushButton_settings.clicked.connect(
-            lambda: asyncio.ensure_future(self.on_edit_settings_clicked())
-        )
+
         self.pushButton_delete_moneybox.clicked.connect(
             lambda: asyncio.ensure_future(self.on_delete_moneybox_clicked())
         )
@@ -196,7 +199,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
 
 
     @asyncSlot()
-    async def on_edit_settings_clicked(self):
+    async def on_edit_settings_clicked(self, is_overflow_moneybox: bool):
         if self.label_savings_target.text() == "No Limit":
             savings_target_label = ""
         else:
@@ -207,6 +210,14 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
             savings_amount_label=self.label_savings_amount.text().replace("€","").strip(),
             savings_target_label=savings_target_label,
         )
+
+        if is_overflow_moneybox:
+            dialog.frame_general_settings.setVisible(False)
+            dialog.frame_overflow_moneybox_settings.setVisible(True)
+        else:
+            dialog.frame_general_settings.setVisible(True)
+            dialog.frame_overflow_moneybox_settings.setVisible(False)
+
         dialog.setWindowTitle("Edit settings...")
 
         result = dialog.exec()

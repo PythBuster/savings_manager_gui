@@ -6,6 +6,7 @@ from savings_manager_cli.api_consumers import GetMoneyboxApiConsumer
 
 from src.gui.moneybox_overview_widget import MoneyboxOverviewWidget
 from src.gui.moneyboxes_overview_widget import MoneyboxesOverviewWidget
+from src.gui.prioritylist_widget import PrioritylistWidget
 from src.gui.ui.ui_main_window import Ui_MainWindow
 from src.utils import get_app_data
 
@@ -33,7 +34,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             lambda: asyncio.ensure_future(self.load_moneyboxes_overview_widget())
         )
         self.pushButton_PrioritylistWidget.clicked.connect(
-            lambda: asyncio.ensure_future(self.switch_main_board_widget(QLabel))
+            lambda: asyncio.ensure_future(self.load_prioritylist_widget())
         )
         self.pushButton_AppSettingsWidget.clicked.connect(
             lambda: asyncio.ensure_future(self.switch_main_board_widget(QPushButton))
@@ -42,6 +43,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     @asyncSlot()
     async def on_enter_moneybox(self, moneybox_id: int):
         await self.load_moneybox_overview_widget(moneybox_id=moneybox_id)
+
+    async def load_prioritylist_widget(self):
+        prioritylist_widget = PrioritylistWidget(parent_window=self)
+        await self.switch_main_board_widget(child=prioritylist_widget)
 
     async def load_moneybox_overview_widget(self, moneybox_id:int ):
         async with GetMoneyboxApiConsumer(moneybox_id=moneybox_id) as consumer:
