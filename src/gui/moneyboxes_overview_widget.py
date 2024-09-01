@@ -48,26 +48,22 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
                 return
 
         # TODO collect data
-        savings_amount_label = f"{app_settings['savings_amount'] / 100:.2f} €".replace(
-            ".", ","
-        )
+        savings_amount_label = f"{app_settings['savings_amount'] / 100:.2f} €"
         enabled_automated_savings = app_settings["is_automated_saving_active"]
         allocated_savings = sum(
             moneybox["savings_amount"] for moneybox in self.moneyboxes
         )
-        allocated_savings_label = f"{allocated_savings / 100:.2f} €".replace(".", ",")
+        allocated_savings_label = f"{allocated_savings / 100:.2f} €"
 
         not_allocated_savings = (
             diff
             if (diff := app_settings["savings_amount"] - allocated_savings) >= 0
             else 0
         )
-        not_allocated_savings_label = f"{not_allocated_savings / 100:.2f} €".replace(
-            ".", ","
-        )
+        not_allocated_savings_label = f"{not_allocated_savings / 100:.2f} €"
 
         total_balance = sum(moneybox["balance"] for moneybox in self.moneyboxes)
-        total_balance_label = f"{total_balance/ 100:.2f} €".replace(".", ",")
+        total_balance_label = f"{total_balance/ 100:.2f} €"
 
         self.verticalLayout_app_data_overview.addWidget(
             AppDataOverviewWidget(
@@ -112,19 +108,13 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
                 moneybox_widget = MoneyboxWidget(
                     moneybox_id=moneybox["id"],
                     name_label=moneybox["name"],
-                    savings_amount_label=f"{moneybox['savings_amount'] / 100:.2f} €".replace(
-                        ".", ","
-                    ),
+                    savings_amount_label=f"{moneybox['savings_amount'] / 100:.2f} €",
                     savings_target_label=(
                         "No Limit"
                         if moneybox["savings_target"] is None
-                        else f"{moneybox['savings_target'] / 100:.2f} €".replace(
-                            ".", ","
-                        )
+                        else f"{moneybox['savings_target'] / 100:.2f} €"
                     ),
-                    balance_label=f"{moneybox['balance'] / 100:.2f} €".replace(
-                        ".", ","
-                    ),
+                    balance_label=f"{moneybox['balance'] / 100:.2f} €",
                     priority_label=str(moneybox["priority"]),
                 )
                 moneybox_widget.enter_moneybox.connect(
@@ -183,20 +173,14 @@ class MoneyboxesOverviewWidget(QWidget, Ui_MoneyboxesOverviewWidget):
                 moneybox_id=priority_sorted_moneyboxes[0]["id"],
                 name_label=priority_sorted_moneyboxes[0]["name"],
                 savings_amount_label=(
-                    f"{priority_sorted_moneyboxes[0]['savings_amount'] / 100:.2f} €".replace(
-                        ".", ","
-                    )
+                    f"{priority_sorted_moneyboxes[0]['savings_amount'] / 100:.2f} €"
                 ),
                 savings_target_label=(
                     "No Limit"
                     if priority_sorted_moneyboxes[0]["savings_target"] is None
-                    else f"{priority_sorted_moneyboxes[0]['savings_target'] / 100:.2f} €".replace(
-                        ".", ","
-                    )
+                    else f"{priority_sorted_moneyboxes[0]['savings_target'] / 100:.2f} €"
                 ),
-                balance_label=f"{priority_sorted_moneyboxes[0]['balance'] / 100:.2f} €".replace(
-                    ".", ","
-                ),
+                balance_label=f"{priority_sorted_moneyboxes[0]['balance'] / 100:.2f} €",
                 priority_label=str(priority_sorted_moneyboxes[0]["priority"]),
             )
             moneybox_widget.enter_moneybox.connect(self.parent_window.on_enter_moneybox)

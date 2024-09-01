@@ -136,7 +136,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
                 app_settings_dialog = AppSettingsDialog(
                     savings_amount_label=(
-                        f"{data['savings_amount'] / 100:.2f}".replace(".", ",")
+                        f"{data['savings_amount'] / 100:.2f}"
                     ),
                     enable_automated_savings=data["is_automated_saving_active"],
                     send_reports_via_email=data["send_reports_via_email"],
@@ -230,14 +230,14 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     name_label=data["name"],
                     priority_label=str(data["priority"]),
                     savings_amount_label=(
-                        f"{data['savings_amount'] / 100:.2f} €".replace(".", ",")
+                        f"{data['savings_amount'] / 100:.2f} €"
                     ),
                     savings_target_label=(
                         "No Limit"
                         if data["savings_target"] is None
-                        else f"{data['savings_target'] / 100:.2f} €".replace(".", ",")
+                        else f"{data['savings_target'] / 100:.2f} €"
                     ),
-                    balance_label=(f"{data['balance'] / 100:.2f} €".replace(".", ",")),
+                    balance_label=f"{data['balance'] / 100:.2f} €",
                 )
                 await self.switch_main_board_widget(child=moneybox_overview_widget)
             else:

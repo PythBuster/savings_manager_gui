@@ -269,19 +269,15 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
                             "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €".replace(
-                                    ".", ","
-                                )
+                                f"{data['savings_amount'] / 100:.2f} €"
                             ),
                             "savings_target_label": (
                                 "No Limit"
                                 if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €".replace(
-                                    ".", ","
-                                )
+                                else f"{data['savings_target'] / 100:.2f} €"
                             ),
                             "balance_label": (
-                                f"{data['balance'] / 100:.2f} €".replace(".", ",")
+                                f"{data['balance'] / 100:.2f} €"
                             ),
                         }
                     )
@@ -324,19 +320,15 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
                             "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €".replace(
-                                    ".", ","
-                                )
+                                f"{data['savings_amount'] / 100:.2f} €"
                             ),
                             "savings_target_label": (
                                 "No Limit"
                                 if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €".replace(
-                                    ".", ","
-                                )
+                                else f"{data['savings_target'] / 100:.2f} €"
                             ),
                             "balance_label": (
-                                f"{data['balance'] / 100:.2f} €".replace(".", ",")
+                                f"{data['balance'] / 100:.2f} €"
                             ),
                         }
                     )
@@ -379,19 +371,15 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
                             "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €".replace(
-                                    ".", ","
-                                )
+                                f"{data['savings_amount'] / 100:.2f} €"
                             ),
                             "savings_target_label": (
                                 "No Limit"
                                 if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €".replace(
-                                    ".", ","
-                                )
+                                else f"{data['savings_target'] / 100:.2f} €"
                             ),
                             "balance_label": (
-                                f"{data['balance'] / 100:.2f} €".replace(".", ",")
+                                f"{data['balance'] / 100:.2f} €"
                             ),
                         }
                     )
@@ -469,7 +457,7 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                         - amount
                     )
                     self.label_balance.setText(
-                        f"{new_balance / 100:.2f} €".replace(".", ",")
+                        f"{new_balance / 100:.2f} €"
                     )
                     await self.load_api_content()
                 else:
