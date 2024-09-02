@@ -117,6 +117,7 @@ class Ui_AddSubTransferAmountDialog(object):
         self.retranslateUi(AddSubTransferAmountDialog)
 
         #QMetaObject.connectSlotsByName(AddSubTransferAmountDialog)
+
     # setupUi
 
     def retranslateUi(self, AddSubTransferAmountDialog):

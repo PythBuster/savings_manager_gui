@@ -49,7 +49,7 @@ class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
         text = self.lineEdit_amount.text().strip()
 
         # digits only
-        if text.count(",") > 1 or text == ",":
+        if text.count(".") > 1 or text == ".":
             # reset text to previous valid one
             self.lineEdit_amount.blockSignals(True)
             self.lineEdit_amount.setText(self._previous_lineEdit_amount_text)
@@ -62,7 +62,7 @@ class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
             return
 
         for ch in text:
-            if ch.isdigit() or ch == ",":
+            if ch.isdigit() or ch == ".":
                 continue
 
             # reset text to previous valid one
@@ -77,13 +77,13 @@ class AddSubDialog(QDialog, Ui_AddSubTransferAmountDialog):
             return
 
         if not text:
-            cleaned_text = "0,00"
+            cleaned_text = "0.00"
         else:
             cleaned_text = text.replace(",", "").replace(".", "").lstrip("0") or "0"
             # Formatierung der Eingabe
             while len(cleaned_text) < 3:
                 cleaned_text = "0" + cleaned_text
-            cleaned_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
+            cleaned_text = f"{cleaned_text[:-2]}.{cleaned_text[-2:]}"
 
         # Setze den Text ohne die TextChanged-Signal erneut auszulösen
         self.lineEdit_amount.blockSignals(True)

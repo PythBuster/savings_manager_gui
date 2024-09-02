@@ -7,7 +7,7 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
     def __init__(
         self,
         name_label: str = "",
-        savings_amount_label: str = "0,00",
+        savings_amount_label: str = "0.00",
         savings_target_label: str = "",
         parent: QWidget | None = None,
     ):
@@ -50,7 +50,7 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
         text = self.lineEdit_savings_amount.text().strip()
 
         # digits only
-        if text.count(",") > 1 or text == ",":
+        if text.count(".") > 1 or text == ".":
             # reset text to previous valid one
             self.lineEdit_savings_amount.blockSignals(True)
             self.lineEdit_savings_amount.setText(
@@ -60,7 +60,7 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
             return
 
         for ch in text:
-            if ch.isdigit() or ch == ",":
+            if ch.isdigit() or ch == ".":
                 continue
             else:
                 # reset text to previous valid one
@@ -72,13 +72,13 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
                 return
 
         if not text:
-            cleaned_text = "0,00"
+            cleaned_text = "0.00"
         else:
             cleaned_text = text.replace(",", "").replace(".", "").lstrip("0") or "0"
             # Formatierung der Eingabe
             while len(cleaned_text) < 3:
                 cleaned_text = "0" + cleaned_text
-            cleaned_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
+            cleaned_text = f"{cleaned_text[:-2]}.{cleaned_text[-2:]}"
 
         # Setze den Text ohne die TextChanged-Signal erneut auszulösen
         self.lineEdit_savings_amount.blockSignals(True)
@@ -102,7 +102,7 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
         text = self.lineEdit_savings_target.text().strip()
 
         # digits only
-        if text.count(",") > 1 or text == ",":
+        if text.count(".") > 1 or text == ".":
             # reset text to previous valid one
             self.lineEdit_savings_target.blockSignals(True)
             self.lineEdit_savings_target.setText(
@@ -112,7 +112,7 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
             return
 
         for ch in text:
-            if ch.isdigit() or ch == ",":
+            if ch.isdigit() or ch == ".":
                 continue
 
             # reset text to previous valid one
@@ -129,8 +129,8 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
             .lstrip("0")
         )
 
-        if text == "0,0" and _prev == "":
-            # Setze auf leer, wenn der Text 0,00 ist
+        if text == "0.0" and _prev == "":
+            # Setze auf leer, wenn der Text 0.00 ist
             self.lineEdit_savings_target.blockSignals(True)
             self.lineEdit_savings_target.setText("")
             self.lineEdit_savings_target.blockSignals(False)
@@ -145,7 +145,7 @@ class MoneyboxSettingsDialog(QDialog, Ui_MoneyboxSettingsDialog):
                 while len(cleaned_text) < 3:
                     cleaned_text = "0" + cleaned_text
 
-                cleaned_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
+                cleaned_text = f"{cleaned_text[:-2]}.{cleaned_text[-2:]}"
                 # Setze den Text ohne die TextChanged-Signal erneut auszulösen
                 self.lineEdit_savings_target.blockSignals(True)
                 self.lineEdit_savings_target.setText(cleaned_text)

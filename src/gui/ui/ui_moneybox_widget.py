@@ -208,14 +208,14 @@ class Ui_MoneyBoxWidget(object):
     def retranslateUi(self, MoneyBoxWidget):
         MoneyBoxWidget.setWindowTitle(QCoreApplication.translate("MoneyBoxWidget", u"Form", None))
         self.label_savings_amount_prefix.setText(QCoreApplication.translate("MoneyBoxWidget", u"+", None))
-        self.label_savings_amount.setText(QCoreApplication.translate("MoneyBoxWidget", u"35,00 \u20ac", None))
+        self.label_savings_amount.setText(QCoreApplication.translate("MoneyBoxWidget", u"35.00 \u20ac", None))
         self.label_1.setText(QCoreApplication.translate("MoneyBoxWidget", u"ID: ", None))
         self.label_id.setText(QCoreApplication.translate("MoneyBoxWidget", u"1", None))
         self.label_name.setText(QCoreApplication.translate("MoneyBoxWidget", u"Overflow Moneybox", None))
         self.label_priority.setText(QCoreApplication.translate("MoneyBoxWidget", u"1", None))
         self.label_target_title.setText(QCoreApplication.translate("MoneyBoxWidget", u"Target:", None))
-        self.label_target_amount.setText(QCoreApplication.translate("MoneyBoxWidget", u"100,00 \u20ac", None))
+        self.label_target_amount.setText(QCoreApplication.translate("MoneyBoxWidget", u"100.00 \u20ac", None))
         self.label_4.setText(QCoreApplication.translate("MoneyBoxWidget", u"Balance:", None))
-        self.label_balance.setText(QCoreApplication.translate("MoneyBoxWidget", u"0,00 \u20ac", None))
+        self.label_balance.setText(QCoreApplication.translate("MoneyBoxWidget", u"0.00 \u20ac", None))
     # retranslateUi
 

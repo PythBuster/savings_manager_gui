@@ -96,7 +96,7 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
         text = self.lineEdit_savings_amount.text().strip()
 
         # digits only
-        if text.count(",") > 1 or text == ",":
+        if text.count(".") > 1 or text == ".":
             # reset text to previous valid one
             self.lineEdit_savings_amount.blockSignals(True)
             self.lineEdit_savings_amount.setText(
@@ -106,7 +106,7 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
             return
 
         for ch in text:
-            if ch.isdigit() or ch == ",":
+            if ch.isdigit() or ch == ".":
                 continue
 
             # reset text to previous valid one
@@ -118,13 +118,13 @@ class AppSettingsDialog(QDialog, Ui_AppSettingsDialog):
             return
 
         if not text:
-            cleaned_text = "0,00"
+            cleaned_text = "0.00"
         else:
             cleaned_text = text.replace(",", "").replace(".", "").lstrip("0") or "0"
             # Formatierung der Eingabe
             while len(cleaned_text) < 3:
                 cleaned_text = "0" + cleaned_text
-            cleaned_text = f"{cleaned_text[:-2]},{cleaned_text[-2:]}"
+            cleaned_text = f"{cleaned_text[:-2]}.{cleaned_text[-2:]}"
 
         # Setze den Text ohne die TextChanged-Signal erneut auszulösen
         self.lineEdit_savings_amount.blockSignals(True)

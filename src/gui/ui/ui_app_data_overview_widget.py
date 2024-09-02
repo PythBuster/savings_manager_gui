@@ -120,14 +120,14 @@ class Ui_AppDataOverviewWidget(object):
     def retranslateUi(self, AppDataOverviewWidget):
         AppDataOverviewWidget.setWindowTitle(QCoreApplication.translate("AppDataOverviewWidget", u"Form", None))
         self.label.setText(QCoreApplication.translate("AppDataOverviewWidget", u"App Savings Amount:", None))
-        self.label_savings_amount.setText(QCoreApplication.translate("AppDataOverviewWidget", u"500,00 \u20ac", None))
+        self.label_savings_amount.setText(QCoreApplication.translate("AppDataOverviewWidget", u"500.00 \u20ac", None))
         self.label_3.setText(QCoreApplication.translate("AppDataOverviewWidget", u"Automated Savings:", None))
         self.label_automated_savings_active_state.setText(QCoreApplication.translate("AppDataOverviewWidget", u"Enabled", None))
         self.label_5.setText(QCoreApplication.translate("AppDataOverviewWidget", u"Allocated Savings:", None))
-        self.label_allocated_savings.setText(QCoreApplication.translate("AppDataOverviewWidget", u"400,00 \u20ac", None))
+        self.label_allocated_savings.setText(QCoreApplication.translate("AppDataOverviewWidget", u"400.00 \u20ac", None))
         self.label_7.setText(QCoreApplication.translate("AppDataOverviewWidget", u"Not Allocated Savings:", None))
-        self.label_not_allocated_savings.setText(QCoreApplication.translate("AppDataOverviewWidget", u"100,00 \u20ac", None))
+        self.label_not_allocated_savings.setText(QCoreApplication.translate("AppDataOverviewWidget", u"100.00 \u20ac", None))
         self.label_9.setText(QCoreApplication.translate("AppDataOverviewWidget", u"Total Balance:", None))
-        self.label_total_balance.setText(QCoreApplication.translate("AppDataOverviewWidget", u"1234,00 \u20ac", None))
+        self.label_total_balance.setText(QCoreApplication.translate("AppDataOverviewWidget", u"1234.00 \u20ac", None))
     # retranslateUi
 
