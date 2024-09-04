@@ -97,7 +97,7 @@ class PrioritylistWidget(QWidget, Ui_PriorityListWidget):
 
         async with GetPriorityListApiConsumer() as consumer:
             if consumer.response.status_code == 200:
-                sorted_by_priority_data = consumer.response.json()["priority_list"]
+                sorted_by_priority_data = consumer.response.json()["prioritylist"]
 
                 for priority_data in sorted_by_priority_data:
                     item = QListWidgetItem(
