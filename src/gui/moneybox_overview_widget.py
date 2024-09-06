@@ -91,10 +91,10 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
             self.tableWidget_transaction_logs.clear()
 
             if consumer.response.status_code == 200:
-                transaction_logs = consumer.response.json()["transaction_logs"]
+                transaction_logs = consumer.response.json()["transactionLogs"]
                 sorted_by_date_transaction_logs = sorted(
                     transaction_logs,
-                    key=lambda x: x["created_at"],
+                    key=lambda x: x["createdAt"],
                     reverse=True,
                 )
                 transaction_logs = self.prepare_transaction_logs_for_table_insert(
@@ -137,15 +137,15 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
     ):
         return [
             {
-                "date": transaction_log["created_at"],
-                "trigger": transaction_log["transaction_trigger"],
-                "type": transaction_log["transaction_type"],
+                "date": transaction_log["createdAt"],
+                "trigger": transaction_log["transactionTrigger"],
+                "type": transaction_log["transactionType"],
                 "counterparty": (
                     (
-                        f"{transaction_log['counterparty_moneybox_name']} (ID: "
-                        f"{transaction_log['counterparty_moneybox_id']})"
+                        f"{transaction_log['counterpartyMoneyboxName']} (ID: "
+                        f"{transaction_log['counterpartyMoneyboxId']})"
                     )
-                    if transaction_log["counterparty_moneybox_name"] is not None
+                    if transaction_log["counterpartyMoneyboxName"] is not None
                     else ""
                 ),
                 "amount": transaction_log["amount"],
@@ -263,27 +263,39 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     )
 
                     data = consumer.response.json()
+
+                    savings_amount_label = (
+                        f"{data['savingsAmount'] / 100:.2f} €"
+                        if data['savingsAmount'] > 0
+                        else "0.00 €"
+                    )
+
+                    match data["savingsTarget"]:
+                        case 0:
+                            savings_target_label = "0.00 €"
+                        case None:
+                            savings_target_label = "No Limit"
+                        case _:
+                            savings_target_label = f"{data['savingsTarget'] / 100:.2f} €"
+
+                    if data["balance"] > 0:
+                        balance_label = f"{data['balance'] / 100:.2f} €"
+                    else:
+                        balance_label = "0.00 €"
+
                     await self.update_data(
                         {
                             "moneybox_id": self.moneybox_id,
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
-                            "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €"
-                            ),
-                            "savings_target_label": (
-                                "No Limit"
-                                if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €"
-                            ),
-                            "balance_label": (
-                                f"{data['balance'] / 100:.2f} €"
-                            ),
+                            "savings_amount_label": savings_amount_label,
+                            "savings_target_label": savings_target_label,
+                            "balance_label": balance_label,
                         }
                     )
                 else:
                     message_str = consumer.response.content.decode(encoding="utf-8")
-                    message = json.loads(message_str)["message"]
+                    message = json.loads(message_str)["detail"]
                     QMessageBox.warning(
                         self,
                         "Add failed",
@@ -314,22 +326,34 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     )
 
                     data = consumer.response.json()
+
+                    savings_amount_label = (
+                        f"{data['savingsAmount'] / 100:.2f} €"
+                        if data['savingsAmount'] > 0
+                        else "0.00 €"
+                    )
+
+                    match data["savingsTarget"]:
+                        case 0:
+                            savings_target_label = "0.00 €"
+                        case None:
+                            savings_target_label = "No Limit"
+                        case _:
+                            savings_target_label = f"{data['savingsTarget'] / 100:.2f} €"
+
+                    if data["balance"] > 0:
+                        balance_label = f"{data['balance'] / 100:.2f} €"
+                    else:
+                        balance_label = "0.00 €"
+
                     await self.update_data(
                         {
                             "moneybox_id": self.moneybox_id,
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
-                            "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €"
-                            ),
-                            "savings_target_label": (
-                                "No Limit"
-                                if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €"
-                            ),
-                            "balance_label": (
-                                f"{data['balance'] / 100:.2f} €"
-                            ),
+                            "savings_amount_label": savings_amount_label,
+                            "savings_target_label": savings_target_label,
+                            "balance_label": balance_label,
                         }
                     )
                 else:
@@ -365,22 +389,34 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                     )
 
                     data = consumer.response.json()
+
+                    savings_amount_label = (
+                        f"{data['savingsAmount'] / 100:.2f} €"
+                        if data['savingsAmount'] > 0
+                        else "0.00 €"
+                    )
+
+                    match data["savingsTarget"]:
+                        case 0:
+                            savings_target_label = "0.00 €"
+                        case None:
+                            savings_target_label = "No Limit"
+                        case _:
+                            savings_target_label = f"{data['savingsTarget'] / 100:.2f} €"
+
+                    if data["balance"] > 0:
+                        balance_label = f"{data['balance'] / 100:.2f} €"
+                    else:
+                        balance_label = "0.00 €"
+
                     await self.update_data(
                         {
                             "moneybox_id": self.moneybox_id,
                             "name_label": data["name"],
                             "priority_label": str(data["priority"]),
-                            "savings_amount_label": (
-                                f"{data['savings_amount'] / 100:.2f} €"
-                            ),
-                            "savings_target_label": (
-                                "No Limit"
-                                if data["savings_target"] is None
-                                else f"{data['savings_target'] / 100:.2f} €"
-                            ),
-                            "balance_label": (
-                                f"{data['balance'] / 100:.2f} €"
-                            ),
+                            "savings_amount_label": savings_amount_label,
+                            "savings_target_label": savings_target_label,
+                            "balance_label": balance_label,
                         }
                     )
                 else:
@@ -456,9 +492,13 @@ class MoneyboxOverviewWidget(QWidget, Ui_MoneyboxOverviewWidget):
                         )
                         - amount
                     )
-                    self.label_balance.setText(
-                        f"{new_balance / 100:.2f} €"
-                    )
+
+                    if new_balance > 0:
+                        balance_label = f"{new_balance / 100:.2f} €"
+                    else:
+                        balance_label = "0.00 €"
+
+                    self.label_balance.setText(balance_label)
                     await self.load_api_content()
                 else:
                     message_str = consumer.response.content.decode(encoding="utf-8")

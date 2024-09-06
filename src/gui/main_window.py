@@ -122,7 +122,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             if consumer.response.status_code == 200:
                 data = consumer.response.json()
 
-                match data["overflow_moneybox_automated_savings_mode"]:
+                match data["overflowMoneyboxAutomatedSavingsMode"]:
                     case "collect":
                         mode = "collect"
                     case "add_to_automated_savings_amount":
@@ -131,16 +131,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         mode = "fill"
                     case _:
                         raise ValueError(
-                            f"No supported {data['overflow_moneybox_automated_savings_mode']}"
+                            f"No supported {data['overflowMoneyboxAutomatedSavingsMode']}"
                         )
 
                 app_settings_dialog = AppSettingsDialog(
                     savings_amount_label=(
-                        f"{data['savings_amount'] / 100:.2f}"
+                        f"{data['savingsAmount'] / 100:.2f}"
                     ),
-                    enable_automated_savings=data["is_automated_saving_active"],
-                    send_reports_via_email=data["send_reports_via_email"],
-                    user_email_address=data["user_email_address"],
+                    enable_automated_savings=data["isAutomatedSavingActive"],
+                    send_reports_via_email=data["sendReportsViaEmail"],
+                    user_email_address=data["userEmailAddress"],
                     overflow_moneybox_mode=mode,
                 )
 
@@ -163,7 +163,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             mode = "fill_up_limited_moneyboxes"
                         case _:
                             raise ValueError(
-                                f"No supported {data['overflow_moneybox_automated_savings_mode']}"
+                                f"No supported {data['overflowMoneyboxAutomatedSavingsMode']}"
                             )
 
                     async with PatchAppSettingsApiConsumer(
@@ -224,20 +224,31 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         async with GetMoneyboxApiConsumer(moneybox_id=moneybox_id) as consumer:
             if consumer.response.status_code == 200:
                 data = consumer.response.json()
+
+                match data["savingsTarget"]:
+                    case 0:
+                        savings_target_label = "0.00 €"
+                    case None:
+                        savings_target_label = "No Limit"
+                    case _:
+                        savings_target_label=f"{data['savingsAmount'] / 100:.2f} €"
+
                 moneybox_overview_widget = MoneyboxOverviewWidget(
                     parent_window=self,
                     moneybox_id=data["id"],
                     name_label=data["name"],
                     priority_label=str(data["priority"]),
                     savings_amount_label=(
-                        f"{data['savings_amount'] / 100:.2f} €"
+                        f"{data['savingsAmount'] / 100:.2f} €"
+                        if data['savingsAmount']
+                        else "0.00 €"
                     ),
-                    savings_target_label=(
-                        "No Limit"
-                        if data["savings_target"] is None
-                        else f"{data['savings_target'] / 100:.2f} €"
-                    ),
-                    balance_label=f"{data['balance'] / 100:.2f} €",
+                    savings_target_label=savings_target_label,
+                    balance_label=(
+                        f"{data['balance'] / 100:.2f} €"
+                        if data['balance'] > 0
+                        else "0.00 €"
+                    )
                 )
                 await self.switch_main_board_widget(child=moneybox_overview_widget)
             else:

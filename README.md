@@ -1,3 +1,5 @@
+**Note: This tool is created in a hackton. Implemenetd fast, quick and dirty. Don't follow that example :D**
+
 # Savings Manager GUI
 This is a GUI Desktop App for the savings_manager (https://github.com/PythBuster/savings_manager).
 

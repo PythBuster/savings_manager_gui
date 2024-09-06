@@ -45,7 +45,7 @@ class PrioritylistWidget(QWidget, Ui_PriorityListWidget):
             self.listWidget_prioritylist.setCurrentRow(current_row - 1)
 
             async with UpdatePriorityListApiConsumer(
-                moneybox_id=current_item.meta_data["moneybox_id"],
+                moneybox_id=current_item.meta_data["moneyboxId"],
                 move_direction=MoveDirection.UP,
                 move_steps=1,
             ) as consumer:
@@ -77,7 +77,7 @@ class PrioritylistWidget(QWidget, Ui_PriorityListWidget):
             self.listWidget_prioritylist.setCurrentRow(current_row + 1)
 
             async with UpdatePriorityListApiConsumer(
-                moneybox_id=current_item.meta_data["moneybox_id"],
+                moneybox_id=current_item.meta_data["moneyboxId"],
                 move_direction=MoveDirection.DOWN,
                 move_steps=1,
             ) as consumer:
@@ -101,7 +101,7 @@ class PrioritylistWidget(QWidget, Ui_PriorityListWidget):
 
                 for priority_data in sorted_by_priority_data:
                     item = QListWidgetItem(
-                        f"{priority_data['name']} (ID: {priority_data['moneybox_id']})"
+                        f"{priority_data['name']} (ID: {priority_data['moneyboxId']})"
                     )
                     item.meta_data = priority_data
                     self.listWidget_prioritylist.addItem(item)
