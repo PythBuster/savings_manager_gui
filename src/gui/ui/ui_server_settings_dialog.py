@@ -104,7 +104,7 @@ class Ui_ServerSettingsDialog(object):
 
         self.retranslateUi(ServerSettingsDialog)
 
-        #QMetaObject.connectSlotsByName(ServerSettingsDialog)
+        QMetaObject.connectSlotsByName(ServerSettingsDialog)
     # setupUi
 
     def retranslateUi(self, ServerSettingsDialog):

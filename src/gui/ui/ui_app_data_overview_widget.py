@@ -114,7 +114,7 @@ class Ui_AppDataOverviewWidget(object):
 
         self.retranslateUi(AppDataOverviewWidget)
 
-        #QMetaObject.connectSlotsByName(AppDataOverviewWidget)
+        QMetaObject.connectSlotsByName(AppDataOverviewWidget)
     # setupUi
 
     def retranslateUi(self, AppDataOverviewWidget):

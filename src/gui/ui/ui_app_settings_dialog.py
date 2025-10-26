@@ -24,7 +24,7 @@ class Ui_AppSettingsDialog(object):
     def setupUi(self, AppSettingsDialog):
         if not AppSettingsDialog.objectName():
             AppSettingsDialog.setObjectName(u"AppSettingsDialog")
-        AppSettingsDialog.resize(457, 234)
+        AppSettingsDialog.resize(457, 240)
         self.verticalLayout = QVBoxLayout(AppSettingsDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.frame_app_settings = QFrame(AppSettingsDialog)
@@ -77,6 +77,8 @@ class Ui_AppSettingsDialog(object):
         self.formLayout_general_settings.setWidget(0, QFormLayout.LabelRole, self.label)
 
         self.comboBox_overflow_moneybox_modes = QComboBox(self.frame_app_settings)
+        self.comboBox_overflow_moneybox_modes.addItem("")
+        self.comboBox_overflow_moneybox_modes.addItem("")
         self.comboBox_overflow_moneybox_modes.addItem("")
         self.comboBox_overflow_moneybox_modes.addItem("")
         self.comboBox_overflow_moneybox_modes.addItem("")
@@ -142,7 +144,7 @@ class Ui_AppSettingsDialog(object):
 
         self.retranslateUi(AppSettingsDialog)
 
-        #QMetaObject.connectSlotsByName(AppSettingsDialog)
+        QMetaObject.connectSlotsByName(AppSettingsDialog)
     # setupUi
 
     def retranslateUi(self, AppSettingsDialog):
@@ -155,6 +157,8 @@ class Ui_AppSettingsDialog(object):
         self.comboBox_overflow_moneybox_modes.setItemText(0, QCoreApplication.translate("AppSettingsDialog", u"collect", None))
         self.comboBox_overflow_moneybox_modes.setItemText(1, QCoreApplication.translate("AppSettingsDialog", u"add", None))
         self.comboBox_overflow_moneybox_modes.setItemText(2, QCoreApplication.translate("AppSettingsDialog", u"fill", None))
+        self.comboBox_overflow_moneybox_modes.setItemText(3, QCoreApplication.translate("AppSettingsDialog", u"equal", None))
+        self.comboBox_overflow_moneybox_modes.setItemText(4, QCoreApplication.translate("AppSettingsDialog", u"ratio", None))
 
         self.pushButton_send_testemail.setText(QCoreApplication.translate("AppSettingsDialog", u"Save && send a test email", None))
         self.pushButton_apply.setText(QCoreApplication.translate("AppSettingsDialog", u"&Save", None))

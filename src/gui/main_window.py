@@ -129,6 +129,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                         mode = "add"
                     case "fill_up_limited_moneyboxes":
                         mode = "fill"
+                    case "equal":
+                        mode = "equal"
+                    case "ratio":
+                        mode = "ratio"
                     case _:
                         raise ValueError(
                             f"No supported {data['overflowMoneyboxAutomatedSavingsMode']}"
@@ -161,6 +165,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                             mode = "add_to_automated_savings_amount"
                         case "fill":
                             mode = "fill_up_limited_moneyboxes"
+                        case "equal":
+                            mode = "equal"
+                        case "ratio":
+                            mode = "ratio"
                         case _:
                             raise ValueError(
                                 f"No supported {data['overflowMoneyboxAutomatedSavingsMode']}"
